@@ -1,0 +1,35 @@
+
+.large-title {
+    background-color: #000;
+}
+
+.large-title h1, h2 {
+    font-size: 5rem;
+    text-align: center;
+    color: white;
+}
+
+.paragraph {
+    background-color: white;
+}
+
+.paragraph p {
+    font-size: 24px;
+    width: 70%;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.empty {
+    background-color: #d0d0d0;
+}
+
+[data-animate="shutter-word"] {
+    overflow: hidden;
+}
+
+[data-animate="shutter-word"] .word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+}

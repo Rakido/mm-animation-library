@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moon-Moon Animation Library Demo</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/data-image-parallax.css">
+    <link rel="stylesheet" href="css/data-image-reveal.css">
+    <link rel="stylesheet" href="css/data-stagger-reveal.css">
+    <link rel="stylesheet" href="css/data-text-reveal.css">
+</head>
+<body>
+    <!-- Text Animation Demo -->
+    <section class="demo-section">
+        <h1 data-splitting="words" data-scroll-text-reveal data-stagger="0.15" data-animate="fade-in slide" data-axis="-y">Moon-Moon Animation Library</h1>
+        
+        <!-- Image Reveal Demo -->
+        <div class="image" data-scroll-image-reveal>
+        <div class='reveal'>
+            <img data-scroll-image-reveal-target data-duration="1.35" data-easing=".25,.01,.5,1"
+            data-scroll-image-reveal-axis="y" src='https://picsum.photos/634/952'>
+        </div>
+        </div>
+
+        <!-- Parallax Demo -->
+        <div class="parallax-container">
+            <img src="https://picsum.photos/800/600" alt="Parallax Image" data-image-parallax data-speed="0.5">
+        </div>
+
+        <!-- Stagger Demo -->
+        <div class="stagger-container" data-stagger>
+            <div class="stagger-item">Item 1</div>
+            <div class="stagger-item">Item 2</div>
+            <div class="stagger-item">Item 3</div>
+        </div>
+    </section>
+
+    <!-- Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/CustomEase.min.js"></script>
+    
+    <!-- Our Library -->
+    <script src="js/mm-library.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
