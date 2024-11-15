@@ -3,48 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moon-Moon Animation Library Demo</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/data-image-parallax.css">
-    <link rel="stylesheet" href="css/data-image-reveal.css">
-    <link rel="stylesheet" href="css/data-stagger-reveal.css">
-    <link rel="stylesheet" href="css/data-text-reveal.css">
+    <title>MoonMoon Text Animation Showcase</title>
+    <style>
+        section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .example {
+            margin: 150px 0;
+            font-size: 2.5rem;
+        }
+        .small {
+            font-size: 1.5rem;
+        }
+        .dark {
+            background: #111;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <!-- Text Animation Demo -->
-    <section class="demo-section">
-        <h1 data-splitting="words" data-scroll-text-reveal data-stagger="0.15" data-animate="fade-in slide" data-axis="-y">Moon-Moon Animation Library</h1>
-        
-        <!-- Image Reveal Demo -->
-        <div class="image" data-scroll-image-reveal>
-        <div class='reveal'>
-            <img data-scroll-image-reveal-target data-duration="1.35" data-easing=".25,.01,.5,1"
-            data-scroll-image-reveal-axis="y" src='https://picsum.photos/634/952'>
-        </div>
+    <section>
+        <!-- 1. Basic Fade In by Words -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="fade-in" data-stagger="0.1">
+                Fade in animation by words
+            </h2>
         </div>
 
-        <!-- Parallax Demo -->
-        <div class="parallax-container">
-            <img src="https://picsum.photos/800/600" alt="Parallax Image" data-image-parallax data-speed="0.5">
+        <!-- 2. Slide Up Line by Line -->
+        <div class="example">
+            <p data-scroll-text-reveal data-splitting="lines" data-animate="lines-up" data-duration="1.2">
+                Each line of this text<br>
+                will slide up independently<br>
+                creating a smooth sequence
+            </p>
         </div>
 
-        <!-- Stagger Demo -->
-        <div class="stagger-container" data-stagger>
-            <div class="stagger-item">Item 1</div>
-            <div class="stagger-item">Item 2</div>
-            <div class="stagger-item">Item 3</div>
+        <!-- 3. Character by Character Reveal -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="chars" data-animate="fade-in slide" data-axis="y" data-stagger="0.03">
+                Character by character
+            </h2>
+        </div>
+
+        <!-- 4. Shutter Effect -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="shutter-word" data-color="#ff0000" data-stagger="0.15">
+                Shutter reveal effect
+            </h2>
+        </div>
+
+        <!-- 5. Slide from Right -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="slide" data-axis="x" data-stagger="0.1">
+                Words sliding from right
+            </h2>
+        </div>
+
+        <!-- 6. Slide from Left -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="slide" data-axis="-x" data-stagger="0.1">
+                Words sliding from left
+            </h2>
+        </div>
+
+        <!-- 7. Custom Easing with Fade -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="fade-in" data-easing="0.7,0,0.3,1" data-stagger="0.15">
+                Custom easing animation
+            </h2>
+        </div>
+
+        <!-- 8. Delayed Start -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="fade-in slide" data-delay="0.5" data-stagger="0.1">
+                Delayed start animation
+            </h2>
+        </div>
+
+        <!-- 9. Slow Duration -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="fade-in" data-duration="2.5" data-stagger="0.2">
+                Slower animation duration
+            </h2>
+        </div>
+
+        <!-- 10. Combined Effects -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="fade-in slide shutter-word" data-axis="y" data-color="#0000ff">
+                Multiple effects combined
+            </h2>
+        </div>
+
+        <!-- 11. Fast Stagger -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="chars" data-animate="fade-in" data-stagger="0.02">
+                Really fast character stagger effect
+            </h2>
+        </div>
+
+        <!-- 12. Diagonal Slide -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="slide" data-axis="x" data-stagger="0.1" 
+                style="transform: skew(-10deg)">
+                Diagonal sliding effect
+            </h2>
+        </div>
+
+        <!-- 13. Shutter with Custom Color -->
+        <div class="example dark">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="shutter-word" data-color="#00ff00" data-axis="y">
+                Vertical shutter with green
+            </h2>
+        </div>
+
+        <!-- 14. Long Text Lines -->
+        <div class="example small">
+            <p data-scroll-text-reveal data-splitting="lines" data-animate="lines-up" data-stagger="0.15">
+                This is a longer paragraph of text that will be split into multiple lines.
+                Each line will animate independently, creating a smooth reading experience.
+                The timing is carefully coordinated to guide the reader's eye naturally.
+            </p>
+        </div>
+
+        <!-- 15. Mixed Split Types -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="chars" data-animate="fade-in slide" data-axis="-y" data-stagger="0.02">
+                Mixed Animation Types
+            </h2>
+            <p data-scroll-text-reveal data-splitting="words" data-animate="fade-in" data-delay="1" data-stagger="0.1" class="small">
+                Followed by words with delayed start
+            </p>
+        </div>
+
+        <!-- 16. Reverse Slide Direction -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="slide" data-axis="-y" data-stagger="0.1">
+                Sliding from bottom up
+            </h2>
+        </div>
+
+        <!-- 17. Complex Timing -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" 
+                data-animate="fade-in slide" 
+                data-duration="1.5" 
+                data-delay="0.3" 
+                data-stagger="0.25" 
+                data-easing="0.6,0.01,0.05,0.95">
+                Complex timing animation
+            </h2>
+        </div>
+
+        <!-- 18. Fade with Custom Start -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="fade-in" data-fade-start="0.3" data-stagger="0.1">
+                Custom fade starting point
+            </h2>
+        </div>
+
+        <!-- 19. Rapid Sequence -->
+        <div class="example">
+            <h2 data-scroll-text-reveal data-splitting="chars" 
+                data-animate="fade-in slide" 
+                data-axis="x" 
+                data-stagger="0.015" 
+                data-duration="0.5">
+                Rapid sequence animation
+            </h2>
+        </div>
+
+        <!-- 20. Grand Finale -->
+        <div class="example">
+            <h2 data-scroll-text-reveal 
+                data-splitting="words" 
+                data-animate="fade-in slide shutter-word" 
+                data-axis="y" 
+                data-color="#ff00ff" 
+                data-stagger="0.2" 
+                data-duration="2" 
+                data-easing="0.7,0,0.3,1">
+                Grand Finale Animation
+            </h2>
         </div>
     </section>
 
     <!-- Dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/bundled/lenis.min.js"></script>
-    <script src="https://unpkg.com/split-type"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/CustomEase.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
     
-    <!-- Our Library -->
-    <script src="js/mm-library.js"></script>
-    <script src="js/script.js"></script>
+    <!-- MoonMoon Text Animation Library -->
+    <script src="js/mm-text-animation.js"></script>
 </body>
 </html>
