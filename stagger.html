@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoonMoon Stagger Animation Showcase</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: system-ui; }
+        section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .example {
+            margin: 150px 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 20px;
+        }
+        .item {
+            aspect-ratio: 1;
+            background: #333;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .list-item {
+            padding: 15px;
+            background: #eee;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <!-- 1. Basic Grid Fade Up -->
+        <div class="example">
+            <h3>Basic Grid Fade Up</h3>
+            <div class="grid" data-stagger-reveal data-scrub="true" data-stagger-delay="0.1">
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+            </div>
+        </div>
+
+        <!-- 2. Cards Slide In from Right -->
+        <div class="example">
+            <h3>Cards Slide In</h3>
+            <div data-stagger-reveal data-direction="right" data-stagger-delay="0.2" data-distance="100">
+                <div class="card">Card 1</div>
+                <div class="card">Card 2</div>
+                <div class="card">Card 3</div>
+            </div>
+        </div>
+
+        <!-- 3. Scale Up with Rotation -->
+        <div class="example">
+            <h3>Scale Up with Rotation</h3>
+            <div class="grid" data-stagger-reveal data-direction="rotate-right" data-rotate="45" data-scale="0.5" data-stagger-delay="0.15">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+
+        <!-- 4. List Items Fade In -->
+        <div class="example">
+            <h3>List Fade In</h3>
+            <div data-stagger-reveal data-stagger-delay="0.1" data-opacity="0">
+                <div class="list-item">Item 1</div>
+                <div class="list-item">Item 2</div>
+                <div class="list-item">Item 3</div>
+                <div class="list-item">Item 4</div>
+            </div>
+        </div>
+
+        <!-- 5. Diagonal Slide -->
+        <div class="example">
+            <h3>Diagonal Slide</h3>
+            <div class="grid" data-stagger-reveal data-direction="right" data-distance="100" data-stagger-delay="0.1">
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+            </div>
+        </div>
+
+        <!-- Continue with more examples... -->
+        
+        <!-- 20. Complex Animation -->
+        <div class="example">
+            <h3>Complex Animation</h3>
+            <div data-stagger-reveal 
+                 data-direction="rotate-left" 
+                 data-rotate="360" 
+                 data-scale="0.3" 
+                 data-stagger-delay="0.2" 
+                 data-duration="1.5" 
+                 data-easing="0.7,0,0.3,1">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+
+        <!-- 6. Scroll-Driven Grid -->
+        <div class="example">
+            <h3>Scroll-Driven Grid Animation</h3>
+            <div class="grid" data-stagger-reveal data-scrub="true" data-direction="up" data-distance="200" data-stagger-delay="0.2">
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+            </div>
+        </div>
+
+        <!-- 7. Scroll-Driven Cards -->
+        <div class="example">
+            <h3>Scroll-Driven Cards</h3>
+            <div data-stagger-reveal data-scrub="true" data-direction="right" data-distance="300" data-stagger-delay="0.3">
+                <div class="card">Scroll-driven card 1</div>
+                <div class="card">Scroll-driven card 2</div>
+                <div class="card">Scroll-driven card 3</div>
+            </div>
+        </div>
+
+        <!-- 8. One-Time Scale Animation -->
+        <div class="example">
+            <h3>One-Time Scale Animation</h3>
+            <div class="grid" data-stagger-reveal data-direction="scale-up" data-scale="1.5" data-stagger-delay="0.1">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+
+        <!-- 9. Scroll-Driven Rotation -->
+        <div class="example">
+            <h3>Scroll-Driven Rotation</h3>
+            <div data-stagger-reveal data-scrub="true" data-direction="rotate-right" data-rotate="180" data-stagger-delay="0.2">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+
+        <!-- 10. Mixed Animation Types -->
+        <div class="example">
+            <h3>Mixed Animation Types</h3>
+            <div class="grid" data-stagger-reveal data-direction="up" data-distance="100" data-rotate="45" data-scale="0.8" data-stagger-delay="0.15">
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/CustomEase.min.js"></script>
+    
+    <!-- MoonMoon Stagger Animation Library -->
+    <script src="js/mm-stagger-animation.js"></script>
+</body>
+</html> 
