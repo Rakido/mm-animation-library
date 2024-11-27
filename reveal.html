@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoonMoon Image Reveal Showcase</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; 
+            font-family: system-ui;
+            background: #f5f5f5;
+        }
+        .container {
+            padding: 100px 20px;
+            margin: 100px auto;
+            max-width: 1200px;
+        }
+        h2 {
+            margin-bottom: 40px;
+            font-size: 2rem;
+        }
+        .image {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .reveal {
+            position: relative;
+            overflow: hidden;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        .shutter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Basic Slide Animations -->
+    <div class='container'>
+        <h2>Basic Slide Animations</h2>
+        <div class="grid">
+            <!-- Slide from Right -->
+            <div class="image" data-scroll-image-reveal>
+                <div class='reveal'>
+                    <img data-scroll-image-reveal-target 
+                         data-duration="1.35" 
+                         data-easing=".25,.01,.5,1"
+                         data-scroll-image-reveal-axis="-x" 
+                         src='https://picsum.photos/600/400?1'>
+                </div>
+            </div>
+
+            <!-- Slide from Left -->
+            <div class="image" data-scroll-image-reveal>
+                <div class='reveal'>
+                    <img data-scroll-image-reveal-target 
+                         data-duration="1.35" 
+                         data-easing=".25,.01,.5,1"
+                         data-scroll-image-reveal-axis="x" 
+                         src='https://picsum.photos/600/400?2'>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vertical Slide Animations -->
+    <div class='container'>
+        <h2>Vertical Slide Animations</h2>
+        <div class="grid">
+            <!-- Slide from Top -->
+            <div class="image" data-scroll-image-reveal>
+                <div class='reveal'>
+                    <img data-scroll-image-reveal-target 
+                         data-duration="1.35" 
+                         data-easing=".25,.01,.5,1"
+                         data-scroll-image-reveal-axis="y" 
+                         src='https://picsum.photos/600/400?3'>
+                </div>
+            </div>
+
+            <!-- Slide from Bottom -->
+            <div class="image" data-scroll-image-reveal>
+                <div class='reveal'>
+                    <img data-scroll-image-reveal-target 
+                         data-duration="1.35" 
+                         data-easing=".25,.01,.5,1"
+                         data-scroll-image-reveal-axis="-y" 
+                         src='https://picsum.photos/600/400?4'>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Zoom Animations -->
+    <div class='container'>
+        <h2>Zoom Animations</h2>
+        <div class="grid">
+            <!-- Zoom In -->
+            <div class='reveal' 
+                 data-scroll-image-reveal 
+                 data-scroll-image-reveal-animation="zoom-in"
+                 data-scroll-zoom-percentage="1.8" 
+                 data-easing="power3.inOut" 
+                 data-duration="2">
+                <img data-scroll-image-reveal-target src='https://picsum.photos/600/400?5'>
+            </div>
+
+            <!-- Zoom Out -->
+            <div class='reveal' 
+                 data-scroll-image-reveal 
+                 data-scroll-image-reveal-animation="zoom-out"
+                 data-scroll-zoom-percentage="1.5">
+                <img data-scroll-image-reveal-target src='https://picsum.photos/600/400?6'>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shutter Effects -->
+    <div class='container'>
+        <h2>Shutter Effects</h2>
+        <div class="shutter-grid">
+            <!-- Horizontal Shutter -->
+            <div class='reveal' 
+                 data-scroll-image-reveal 
+                 data-scroll-image-reveal-animation="shutter"
+                 data-easing=".25,.01,.5,1" 
+                 data-duration="1.5" 
+                 data-shutter-axis="x" 
+                 data-color="#ff4444">
+                <img data-scroll-image-reveal-target src='https://picsum.photos/600/400?7'>
+                <div data-scroll-image-reveal-shutter></div>
+            </div>
+
+            <!-- Vertical Shutter -->
+            <div class='reveal' 
+                 data-scroll-image-reveal 
+                 data-scroll-image-reveal-animation="shutter"
+                 data-easing=".25,.01,.5,1" 
+                 data-duration="1.5" 
+                 data-shutter-axis="y" 
+                 data-color="#4444ff">
+                <img data-scroll-image-reveal-target src='https://picsum.photos/600/400?8'>
+                <div data-scroll-image-reveal-shutter></div>
+            </div>
+
+            <!-- Delayed Shutter -->
+            <div class='reveal' 
+                 data-scroll-image-reveal 
+                 data-scroll-image-reveal-animation="shutter"
+                 data-easing=".25,.01,.5,1" 
+                 data-duration="1.5" 
+                 data-delay="0.3" 
+                 data-shutter-axis="x" 
+                 data-color="#44ff44">
+                <img data-scroll-image-reveal-target src='https://picsum.photos/600/400?9'>
+                <div data-scroll-image-reveal-shutter></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Legacy Reveal -->
+    <div class='container'>
+        <h2>Legacy Reveal</h2>
+        <div class="image">
+            <img data-image-reveal src='https://picsum.photos/600/400?10'>
+        </div>
+    </div>
+
+    <!-- Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/CustomEase.min.js"></script>
+    
+    <!-- MoonMoon Image Reveal Library -->
+    <script src="js/mm-image-reveal.js"></script>
+</body>
+</html> 
