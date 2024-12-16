@@ -38,6 +38,8 @@ class MoonMoonText {
             const easingValue = parseEasing(element.getAttribute('data-easing'));
             const animationTypes = element.getAttribute('data-animate') ? element.getAttribute('data-animate').split(' ') : [];
             const axisValue = element.getAttribute('data-axis');
+            const rotateValue = parseFloat(element.getAttribute('data-rotate')) || 0;
+            const skewValue = parseFloat(element.getAttribute('data-skew')) || 0;
 
             let textContent;
             if (element.getAttribute('data-splitting') === 'chars') {
@@ -63,6 +65,8 @@ class MoonMoonText {
                             ease: easingValue,
                             delay: delayValue,
                             duration: durationValue,
+                            skewX: skewValue,
+                            rotate: rotateValue,
                             stagger: staggerValue,
                             scrollTrigger: {
                                 trigger: element,
@@ -125,7 +129,9 @@ class MoonMoonText {
                                 duration: durationValue,
                                 ease: easingValue,
                                 stagger: staggerValue,
-                                delay: delayValue
+                                delay: delayValue,
+                                skewX: skewValue,
+                                rotate: rotateValue,
                             };
                         }
                         break;
@@ -137,7 +143,9 @@ class MoonMoonText {
                             duration: durationValue,
                             ease: easingValue,
                             stagger: staggerValue,
-                            delay: delayValue
+                            delay: delayValue,
+                            skewX: skewValue,
+                            rotate: rotateValue,
                         };
                         break;
 
@@ -163,7 +171,9 @@ class MoonMoonText {
                             duration: durationValue,
                             ease: easingValue,
                             stagger: staggerValue,
-                            delay: delayValue
+                            delay: delayValue,
+                            skewX: skewValue,
+                            rotate: rotateValue,
                         };
                         break;
 
@@ -173,7 +183,9 @@ class MoonMoonText {
                             duration: durationValue,
                             ease: easingValue,
                             stagger: staggerValue,
-                            delay: delayValue
+                            delay: delayValue,
+                            skewX: skewValue,
+                            rotate: rotateValue,
                         };
                 }
 
