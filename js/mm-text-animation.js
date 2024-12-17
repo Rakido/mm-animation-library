@@ -37,10 +37,11 @@ class MoonMoonText {
             const durationValue = parseFloat(element.getAttribute('data-duration')) || 1;
             const easingValue = parseEasing(element.getAttribute('data-easing'));
             const animationTypes = element.getAttribute('data-animate') ? element.getAttribute('data-animate').split(' ') : [];
-            const axisValue = element.getAttribute('data-axis');
+            const axis = element.getAttribute('data-axis');
+            const axisValue = element.getAttribute('data-axis-value') || (axis?.startsWith('-') ? '-100%' : '100%');
             const rotateValue = parseFloat(element.getAttribute('data-rotate')) || 0;
             const skewValue = parseFloat(element.getAttribute('data-skew')) || 0;
-            const scrub = parseFloat(element.getAttribute('data-skew')) || true;
+            const scrub = parseFloat(element.getAttribute('data-skew')) || false;
 
             let textContent;
             if (element.getAttribute('data-splitting') === 'chars') {
@@ -160,14 +161,16 @@ class MoonMoonText {
                             wrapper.appendChild(item);
                         });
                         
-                        const slideAxis = element.getAttribute('data-axis') || 'y';
+                    
+                        
+                        console.log(axis);
                         const slideValue = {
-                            'x': { x: "100%" },
-                            '-x': { x: "-100%" },
-                            'y': { y: "100%" },
-                            '-y': { y: "-100%" }
-                        }[slideAxis] || { y: "100%" };
-
+                            'x': { x: axisValue },
+                            '-x': { x: `-${axisValue}` },
+                            'y': { y: axisValue }, 
+                            '-y': { y: `-${axisValue}` }
+                        }[axis] || { y: axisValue };
+                        
                         animation = {
                             ...slideValue,
                             duration: durationValue,
@@ -197,13 +200,13 @@ class MoonMoonText {
             });
 
             // Add axis animation if specified
-            if (axisValue) {
+            if (axis) {
                 const axisAnimation = {
                     'x': { x: "100%" },
                     '-x': { x: "-100%" },
                     'y': { y: "100%" },
                     '-y': { y: "-100%" }
-                }[axisValue];
+                }[axis];
                 
                 if (axisAnimation) {
                     animations.push(axisAnimation);
