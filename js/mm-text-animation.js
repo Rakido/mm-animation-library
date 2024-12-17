@@ -41,7 +41,7 @@ class MoonMoonText {
             const axisValue = element.getAttribute('data-axis-value') || (axis?.startsWith('-') ? '-100%' : '100%');
             const rotateValue = parseFloat(element.getAttribute('data-rotate')) || 0;
             const skewValue = parseFloat(element.getAttribute('data-skew')) || 0;
-            const scrub = parseFloat(element.getAttribute('data-skew')) || false;
+            const scrub = element.getAttribute('data-scrub') || false;
 
             let textContent;
             if (element.getAttribute('data-splitting') === 'chars') {
@@ -160,10 +160,7 @@ class MoonMoonText {
                             item.parentNode.insertBefore(wrapper, item);
                             wrapper.appendChild(item);
                         });
-                        
-                    
-                        
-                        console.log(axis);
+
                         const slideValue = {
                             'x': { x: axisValue },
                             '-x': { x: `-${axisValue}` },
