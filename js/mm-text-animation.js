@@ -40,6 +40,7 @@ class MoonMoonText {
             const axisValue = element.getAttribute('data-axis');
             const rotateValue = parseFloat(element.getAttribute('data-rotate')) || 0;
             const skewValue = parseFloat(element.getAttribute('data-skew')) || 0;
+            const scrub = parseFloat(element.getAttribute('data-skew')) || true;
 
             let textContent;
             if (element.getAttribute('data-splitting') === 'chars') {
@@ -72,6 +73,7 @@ class MoonMoonText {
                                 trigger: element,
                                 start: "top bottom",
                                 end: "bottom top",
+                                scrub: scrub,
                                 toggleActions: "play none none reverse",
                             }
                         }
@@ -219,6 +221,7 @@ class MoonMoonText {
                         trigger: element,
                         start: "top bottom-=10%",
                         end: "bottom top+=10%",
+                        scrub: scrub,
                         toggleActions: "play none none reverse"
                     }
                 });
@@ -230,6 +233,7 @@ class MoonMoonText {
                         trigger: element,
                         start: "top bottom-=10%",
                         end: "bottom top+=10%",
+                        scrub: scrub,
                         toggleActions: "play none none reverse"
                     }
                 });
