@@ -41,7 +41,8 @@ class MoonMoonText {
             const axisValue = element.getAttribute('data-axis-value') || (axis?.startsWith('-') ? '-100%' : '100%');
             const rotateValue = parseFloat(element.getAttribute('data-rotate')) || 0;
             const skewValue = parseFloat(element.getAttribute('data-skew')) || 0;
-            const scrub = element.getAttribute('data-scrub') || false;
+            const scrubAttr = element.getAttribute('data-scrub');
+            const scrub = scrubAttr === 'true' ? true : (scrubAttr ? parseFloat(scrubAttr) : false);
 
             let textContent;
             if (element.getAttribute('data-splitting') === 'chars') {
