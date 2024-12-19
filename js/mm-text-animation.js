@@ -200,12 +200,14 @@ class MoonMoonText {
             // Add axis animation if specified
             if (axis) {
                 const axisAnimation = {
-                    'x': { x: "100%" },
-                    '-x': { x: "-100%" },
-                    'y': { y: "100%" },
-                    '-y': { y: "-100%" }
+                    'x': { x: axisValue },
+                    '-x': { x: `-${axisValue}` },
+                    'y': { y: axisValue }, 
+                    '-y': { y: `-${axisValue}` }
                 }[axis];
                 
+    
+
                 if (axisAnimation) {
                     animations.push(axisAnimation);
                 }
@@ -232,8 +234,8 @@ class MoonMoonText {
                     ease: easingValue,
                     scrollTrigger: {
                         trigger: element,
-                        start: "top bottom-=10%",
-                        end: "bottom top+=10%",
+                        start: "top bottom+=20%",
+                        end: "bottom top+=40%",
                         scrub: scrub,
                         toggleActions: "play none none reverse"
                     }
