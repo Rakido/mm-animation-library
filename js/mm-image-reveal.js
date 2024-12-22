@@ -45,10 +45,15 @@ class MoonMoonImageReveal {
             const shutterColor = container.dataset.color || '#000000';
             const scrub = container.dataset.scrub === 'true';
 
+            // New scroll trigger parameters
+            const startTrigger = container.dataset.start || "top bottom";
+            const endTrigger = container.dataset.end || "bottom top";
+
             // Base ScrollTrigger configuration
             const scrollTriggerConfig = {
                 trigger: container,
-                start: 'top bottom',
+                start: startTrigger,
+                end: endTrigger,
                 toggleActions: 'play none none none',
                 once: true
             };

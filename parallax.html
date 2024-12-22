@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoonMoon Parallax Showcase</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body {
+            background: #f5f5f5;
+            font-family: system-ui;
+        }
+
+        section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .parallax-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .parallax-element {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .description {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            color: white;
+            background: rgba(0,0,0,0.7);
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .spacer {
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Basic Vertical Parallax with default scrub -->
+    <section>
+        <div class="parallax-wrapper">
+            <img 
+                src="https://picsum.photos/200/200?1" 
+                data-parallax 
+                data-parallax-direction="y" 
+                data-speed="0.5" 
+                data-scrub="true"
+                data-start="top bottom+=20%"
+                data-end="bottom top-=20%"
+                class="parallax-element"
+                alt="Parallax Image 1"
+            >
+        </div>
+        <div class="description">
+            Vertical Parallax (speed: 0.5, default scrub)
+        </div>
+    </section>
+
+    <div class="spacer">
+        <h2>Scroll to see more parallax effects</h2>
+    </div>
+
+    <!-- Horizontal Parallax with smooth scrub -->
+    <section>
+        <div class="parallax-wrapper">
+            <img 
+                src="https://picsum.photos/200/200?2" 
+                data-parallax 
+                data-parallax-direction="x" 
+                data-speed="0.8" 
+                data-scrub="1.5"
+                class="parallax-element"
+                alt="Parallax Image 2"
+            >
+        </div>
+        <div class="description">
+            Horizontal Parallax (speed: 0.8, smooth scrub: 1.5)
+        </div>
+    </section>
+
+    <div class="spacer">
+        <h2>Keep scrolling...</h2>
+    </div>
+
+    <!-- Diagonal Parallax with quick scrub -->
+    <section>
+        <div class="parallax-wrapper">
+            <img 
+                src="https://picsum.photos/200/200?3" 
+                data-parallax 
+                data-parallax-direction="xy" 
+                data-speed="0.3" 
+                data-start="20% 20%"
+                data-scrub="0.5"
+                class="parallax-element"
+                alt="Parallax Image 3"
+            >
+        </div>
+        <div class="description">
+            Diagonal Parallax (speed: 0.3, quick scrub: 0.5)
+        </div>
+    </section>
+
+    <!-- Pinned Corner Parallax -->
+    <section>
+        <div class="parallax-wrapper">
+            <!-- Center image (stays centered) -->
+            <img 
+                src="https://picsum.photos/200/200?4" 
+                data-parallax 
+                data-parallax-direction="xy" 
+                data-speed="0.3"
+                data-scrub="1"
+                class="parallax-element"
+                alt="Center Image"
+            >
+            <!-- Top Left -->
+            <img 
+                src="https://picsum.photos/200/200?5" 
+                data-parallax 
+                data-parallax-pin="top-left"
+                data-speed="0.9"
+                data-scrub="0.6"
+                class="parallax-element"
+                alt="Top Left Image"
+            >
+            <!-- Top Right -->
+            <img 
+                src="https://picsum.photos/200/200?6" 
+                data-parallax 
+                data-parallax-pin="top-right"
+                data-speed="0.6"
+                data-scrub="1.2"
+                class="parallax-element"
+                alt="Top Right Image"
+            >
+            <!-- Bottom Left -->
+            <img 
+                src="https://picsum.photos/200/200?7" 
+                data-parallax 
+                data-parallax-pin="bottom-left"
+                data-speed="0.8"
+                data-scrub="1.2"
+                class="parallax-element"
+                alt="Bottom Left Image"
+            >
+            <!-- Bottom Right -->
+            <img 
+                src="https://picsum.photos/200/200?8" 
+                data-parallax 
+                data-parallax-pin="bottom-right"
+                data-speed="0.5"
+                data-scrub="0.7"
+                class="parallax-element"
+                alt="Bottom Right Image"
+            >
+        </div>
+        <div class="description">
+            Corner Pin Parallax
+        </div>
+    </section>
+
+    <!-- Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- MoonMoon Parallax Library -->
+    <script src="js/mm-parallax.js"></script>
+</body>
+</html> 

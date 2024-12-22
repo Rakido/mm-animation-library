@@ -43,6 +43,17 @@ class MoonMoonText {
             const skewValue = parseFloat(element.getAttribute('data-skew')) || 0;
             const scrubAttr = element.getAttribute('data-scrub');
             const scrub = scrubAttr === 'true' ? true : (scrubAttr ? parseFloat(scrubAttr) : false);
+            const startTrigger = element.dataset.start || "top bottom-=10%";
+            const endTrigger = element.dataset.end || "bottom top+=10%";
+
+            // Update ScrollTrigger configuration in animations
+            const scrollTriggerConfig = {
+                trigger: element,
+                start: startTrigger,
+                end: endTrigger,
+                scrub: scrub,
+                toggleActions: "play none none reverse"
+            };
 
             let textContent;
             if (element.getAttribute('data-splitting') === 'chars') {
@@ -71,13 +82,7 @@ class MoonMoonText {
                             skewX: skewValue,
                             rotate: rotateValue,
                             stagger: staggerValue,
-                            scrollTrigger: {
-                                trigger: element,
-                                start: "top bottom",
-                                end: "bottom top",
-                                scrub: scrub,
-                                toggleActions: "play none none reverse",
-                            }
+                            scrollTrigger: scrollTriggerConfig
                         }
                     );
                     return; // Exit early for lines-up animation
@@ -220,25 +225,13 @@ class MoonMoonText {
                 gsap.to(textContent.map(word => word.lastChild), {
                     ...combinedAnimation,
                     ease: easingValue,
-                    scrollTrigger: {
-                        trigger: element,
-                        start: "top bottom-=10%",
-                        end: "bottom top+=10%",
-                        scrub: scrub,
-                        toggleActions: "play none none reverse"
-                    }
+                    scrollTrigger: scrollTriggerConfig
                 });
             } else {
                 gsap.from(textContent, {
                     ...combinedAnimation,
                     ease: easingValue,
-                    scrollTrigger: {
-                        trigger: element,
-                        start: "top bottom+=20%",
-                        end: "bottom top+=40%",
-                        scrub: scrub,
-                        toggleActions: "play none none reverse"
-                    }
+                    scrollTrigger: scrollTriggerConfig
                 });
             }
         });
