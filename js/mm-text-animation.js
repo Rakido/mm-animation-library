@@ -28,6 +28,22 @@ class MoonMoonText {
             return easingValue;
         };
 
+        // Function to determine stagger order
+        const getStaggerOrder = (elements, method) => {
+            switch (method) {
+                case 'start':
+                    return elements; // No change needed
+                case 'end':
+                    return Array.from(elements).reverse();
+                case 'center':
+                    return elements.sort((a, b) => Math.abs(elements.length / 2 - Array.from(elements).indexOf(a)) - Math.abs(elements.length / 2 - Array.from(elements).indexOf(b)));
+                case 'random':
+                    return elements.sort(() => Math.random() - 0.5);
+                default:
+                    return elements;
+            }
+        };
+
         // Select all elements with the data-scroll-text-reveal attribute
         const textRevealElements = document.querySelectorAll("[data-scroll-text-reveal]");
 
@@ -45,6 +61,7 @@ class MoonMoonText {
             const scrub = scrubAttr === 'true' ? true : (scrubAttr ? parseFloat(scrubAttr) : false);
             const startTrigger = element.dataset.start || "top bottom-=10%";
             const endTrigger = element.dataset.end || "bottom top+=10%";
+            const staggerMethod = element.getAttribute('data-stagger-method') || 'start';
 
             // Update ScrollTrigger configuration in animations
             const scrollTriggerConfig = {
@@ -92,6 +109,9 @@ class MoonMoonText {
             } else {
                 textContent = [element];
             }
+
+            // Apply stagger order
+            textContent = getStaggerOrder(textContent, staggerMethod);
 
             let animations = [];
 
@@ -211,8 +231,6 @@ class MoonMoonText {
                     '-y': { y: `-${axisValue}` }
                 }[axis];
                 
-    
-
                 if (axisAnimation) {
                     animations.push(axisAnimation);
                 }
