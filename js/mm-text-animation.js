@@ -48,7 +48,8 @@ class MoonMoonText {
         const textRevealElements = document.querySelectorAll("[data-scroll-text-reveal]");
 
         textRevealElements.forEach((element) => {
-            const staggerValue = parseFloat(element.getAttribute('data-stagger')) || 0.1;
+            const staggerValue = parseFloat(element.getAttribute('data-stagger')) || 0.05;
+            const staggerMethod = element.getAttribute('data-stagger-method') || 'start';
             const delayValue = parseFloat(element.getAttribute('data-delay')) || 0;
             const durationValue = parseFloat(element.getAttribute('data-duration')) || 1;
             const easingValue = parseEasing(element.getAttribute('data-easing'));
@@ -61,7 +62,6 @@ class MoonMoonText {
             const scrub = scrubAttr === 'true' ? true : (scrubAttr ? parseFloat(scrubAttr) : false);
             const startTrigger = element.dataset.start || "top bottom-=10%";
             const endTrigger = element.dataset.end || "bottom top+=10%";
-            const staggerMethod = element.getAttribute('data-stagger-method') || 'start';
 
             // Update ScrollTrigger configuration in animations
             const scrollTriggerConfig = {
