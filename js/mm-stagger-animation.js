@@ -51,17 +51,17 @@ class MoonMoonStagger {
 
             if (hasDirection) {
                 switch(direction) {
-                    case 'up':
-                        initialState.y = distance;
+                    case 'x':
+                        initialState.x = -distance;
                         break;
-                    case 'down':
-                        initialState.y = -distance;
-                        break;
-                    case 'left':
+                    case '-x':
                         initialState.x = distance;
                         break;
-                    case 'right':
-                        initialState.x = -distance;
+                    case 'y':
+                        initialState.y = -distance;
+                        break;
+                    case '-y':
+                        initialState.y = distance;
                         break;
                 }
             }
@@ -91,11 +91,15 @@ class MoonMoonStagger {
 
             // Add transformations to final state
             if (hasDirection) {
-                if (['up', 'down'].includes(direction)) {
-                    finalState.y = 0;
-                }
-                if (['left', 'right'].includes(direction)) {
-                    finalState.x = 0;
+                switch(direction) {
+                    case 'x':
+                    case '-x':
+                        finalState.x = 0;
+                        break;
+                    case 'y':
+                    case '-y':
+                        finalState.y = 0;
+                        break;
                 }
             }
 
