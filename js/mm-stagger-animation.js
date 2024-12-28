@@ -35,42 +35,92 @@ class MoonMoonStagger {
             const duration = parseFloat(container.dataset.duration) || 1;
             const start = container.dataset.start || 'top 80%';
             const ease = this.parseEasing(container.dataset.easing);
-            const direction = container.dataset.direction || 'up';
+            const hasDirection = container.hasAttribute('data-direction');
+            const direction = container.dataset.direction || 'fade';
             const distance = parseInt(container.dataset.distance) || 50;
             const rotate = parseInt(container.dataset.rotate) || 0;
-            const scale = parseFloat(container.dataset.scale) || 1;
+            const hasScale = container.hasAttribute('data-scale');
+            const scale = hasScale ? parseFloat(container.dataset.scale) : 1;
             const opacity = parseFloat(container.dataset.opacity) || 0;
             const scrub = container.dataset.scrub === 'true';
 
-            // Define direction-based animations
-            const directionValues = {
-                up: { y: distance },
-                down: { y: -distance },
-                left: { x: distance },
-                right: { x: -distance },
-                'scale-up': { scale: scale - 0.5 },
-                'scale-down': { scale: scale + 0.5 },
-                'rotate-left': { rotation: -rotate },
-                'rotate-right': { rotation: rotate }
+            // Set initial states based on direction
+            const initialState = {
+                opacity: opacity
             };
 
-            const animation = {
-                ...directionValues[direction],
-                opacity: opacity,
+            if (hasDirection) {
+                switch(direction) {
+                    case 'up':
+                        initialState.y = distance;
+                        break;
+                    case 'down':
+                        initialState.y = -distance;
+                        break;
+                    case 'left':
+                        initialState.x = distance;
+                        break;
+                    case 'right':
+                        initialState.x = -distance;
+                        break;
+                }
+            }
+
+            // Handle scale
+            if (hasScale) {
+                initialState.scale = scale;
+            }
+
+            // Handle rotation
+            if (direction.includes('rotate')) {
+                initialState.rotation = direction.includes('left') ? rotate : -rotate;
+            } else if (rotate) {
+                initialState.rotation = rotate;
+            }
+
+            // Set initial state
+            gsap.set(elements, initialState);
+
+            // Define final animation state
+            const finalState = {
+                opacity: 1,
                 duration: scrub ? undefined : duration,
                 ease: scrub ? "none" : ease,
-                stagger: delay,
-                scrollTrigger: {
-                    trigger: container,
-                    start: start,
-                    end: scrub ? 'bottom top' : undefined,
-                    scrub: scrub,
-                    toggleActions: scrub ? undefined : 'play none none none',
-                    once: !scrub
-                }
+                stagger: delay
             };
 
-            gsap.from(elements, animation);
+            // Add transformations to final state
+            if (hasDirection) {
+                if (['up', 'down'].includes(direction)) {
+                    finalState.y = 0;
+                }
+                if (['left', 'right'].includes(direction)) {
+                    finalState.x = 0;
+                }
+            }
+
+            // Add scale to final state if specified
+            if (hasScale) {
+                finalState.scale = 1;
+            }
+
+            // Add rotation to final state if specified
+            if (direction.includes('rotate') || rotate) {
+                finalState.rotation = 0;
+            }
+
+            // Add ScrollTrigger configuration
+            finalState.scrollTrigger = {
+                trigger: container,
+                start: start,
+                end: scrub ? 'bottom top' : undefined,
+                scrub: scrub,
+                toggleActions: scrub ? undefined : 'play none none none',
+                once: !scrub
+            };
+
+            // Animate to final state
+            gsap.to(elements, finalState);
         });
     }
 }
