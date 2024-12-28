@@ -43,6 +43,25 @@ class MoonMoonStagger {
             const scale = hasScale ? parseFloat(container.dataset.scale) : 1;
             const opacity = parseFloat(container.dataset.opacity) || 0;
             const scrub = container.dataset.scrub === 'true';
+            const staggerMethod = container.dataset.staggerMethod || 'start';
+
+            // Get elements array based on stagger method
+            let elementsArray = Array.from(elements);
+            switch(staggerMethod) {
+                case 'end':
+                    elementsArray = elementsArray.reverse();
+                    break;
+                case 'center':
+                    elementsArray.sort((a, b) => {
+                        return Math.abs(elementsArray.length / 2 - elementsArray.indexOf(a)) - 
+                               Math.abs(elementsArray.length / 2 - elementsArray.indexOf(b));
+                    });
+                    break;
+                case 'random':
+                    elementsArray.sort(() => Math.random() - 0.5);
+                    break;
+                // 'start' is default, no need to modify array
+            }
 
             // Set initial states based on direction
             const initialState = {
@@ -123,8 +142,8 @@ class MoonMoonStagger {
                 once: !scrub
             };
 
-            // Animate to final state
-            gsap.to(elements, finalState);
+            // Use the ordered elements array for the animation
+            gsap.to(elementsArray, finalState);
         });
     }
 }
