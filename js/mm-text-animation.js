@@ -55,7 +55,7 @@ class MoonMoonText {
             const easingValue = parseEasing(element.getAttribute('data-easing'));
             const animationTypes = element.getAttribute('data-animate') ? element.getAttribute('data-animate').split(' ') : [];
             const axis = element.getAttribute('data-axis');
-            const axisValue = element.getAttribute('data-axis-value') || (axis?.startsWith('-') ? '-100%' : '100%');
+            const axisValue = element.getAttribute('data-axis-value') || '100%';
             const rotateValue = parseFloat(element.getAttribute('data-rotate')) || 0;
             const skewValue = parseFloat(element.getAttribute('data-skew')) || 0;
             const scrubAttr = element.getAttribute('data-scrub');
@@ -174,7 +174,7 @@ class MoonMoonText {
                             stagger: staggerValue,
                             delay: delayValue,
                             skewX: skewValue,
-                            rotate: rotateValue,
+                            rotation: rotateValue,
                         };
                         break;
 
@@ -183,26 +183,58 @@ class MoonMoonText {
                             const wrapper = document.createElement('div');
                             wrapper.style.overflow = 'hidden';
                             wrapper.style.display = 'inline-block';
+                            
+                            if (element.getAttribute('data-splitting') === 'chars') {
+                                item.style.display = 'inline-block';
+                                item.style.transformOrigin = 'center center';
+                            }
+                            
                             item.parentNode.insertBefore(wrapper, item);
                             wrapper.appendChild(item);
                         });
 
-                        const slideValue = {
-                            'x': { x: axisValue },
-                            '-x': { x: `-${axisValue}` },
-                            'y': { y: axisValue }, 
-                            '-y': { y: `-${axisValue}` }
-                        }[axis] || { y: axisValue };
-                        
+                        // Direction handling for from -> to animation
+                        let slideValue = {};
+                        if (axis) {
+                            const property = axis.replace('-', '');
+                            const value = axisValue.replace('-', '');
+                            
+                            // Set the starting position based on axis direction
+                            switch(axis) {
+                                case 'x':
+                                    slideValue.x = value;
+                                    break;
+                                case '-x':
+                                    slideValue.x = `-${value}`;
+                                    break;
+                                case 'y':
+                                    slideValue.y = value;
+                                    break;
+                                case '-y':
+                                    slideValue.y = `-${value}`;
+                                    break;
+                            }
+                        } else {
+                            slideValue.y = axisValue;
+                        }
+
+                        // Create animation object
                         animation = {
                             ...slideValue,
                             duration: durationValue,
                             ease: easingValue,
                             stagger: staggerValue,
-                            delay: delayValue,
-                            skewX: skewValue,
-                            rotate: rotateValue,
+                            delay: delayValue
                         };
+
+                        // Add rotation and skew if needed
+                        if (rotateValue) animation.rotation = rotateValue;
+                        if (skewValue) animation.skewX = skewValue;
+
+                        // Add transform origin for characters
+                        if (element.getAttribute('data-splitting') === 'chars') {
+                            animation.transformOrigin = 'center center';
+                        }
                         break;
 
                     default:
@@ -213,7 +245,7 @@ class MoonMoonText {
                             stagger: staggerValue,
                             delay: delayValue,
                             skewX: skewValue,
-                            rotate: rotateValue,
+                            rotation: rotateValue,
                         };
                 }
 

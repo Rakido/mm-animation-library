@@ -36,7 +36,7 @@
 
         <!-- 2. Slide Up Line by Line -->
         <div class="example">
-            <p data-scroll-text-reveal data-splitting="lines" data-animate="lines-up" data-duration="1.2">
+            <p data-scroll-text-reveal data-splitting="lines" data-animate="lines-up" data-stagger-method="end" data-duration="1.2">
                 Each line of this text
                 <span>will slide up</span> independently
                 creating a smooth sequence lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -45,7 +45,7 @@
 
         <!-- 3. Character by Character Reveal -->
         <div class="example">
-            <h2 data-scroll-text-reveal data-splitting="chars" data-animate="slide" data-stagger="0.01" data-stagger-method="center" data-fade-start="0.2" data-easing="elastic.out(0.4,0.2)">
+            <h2 data-scroll-text-reveal data-splitting="chars" data-animate="slide" data-rotate="450" data-axis="-y" data-stagger="0.1" data-stagger-method="end" data-fade-start="0.2" data-easing="elastic.out(0.4,0.2)">
                 Character by character
             </h2>
         </div>
@@ -59,8 +59,8 @@
 
         <!-- 5. Slide from Right -->
         <div class="example">
-            <h2 data-scroll-text-reveal data-splitting="words" data-animate="fade" data-axis="x" data-stagger="0.1">
-                Words sliding from right
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="fade" data-axis="x" data-stagger="0.1" data-axis-value="100%">
+                Words sliding from rightz
             </h2>
         </div>
 
@@ -80,7 +80,7 @@
 
         <!-- 8. Delayed Start -->
         <div class="example">
-            <h2 data-scroll-text-reveal data-splitting="words" data-animate="fade-in slide" data-delay="0.5" data-stagger="0.1">
+            <h2 data-scroll-text-reveal data-splitting="words" data-animate="fade-in slide" data-delay="0.5" data-stagger="0.1" data-axis="-y">
                 Delayed start animation
             </h2>
         </div>
