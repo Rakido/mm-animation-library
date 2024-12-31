@@ -55,6 +55,18 @@
             text-align: center;
             padding: 2rem;
         }
+
+        .marquee-wrapper {
+            display: flex;
+            gap: 100px;
+            width: max-content;
+        }
+
+        .marquee-wrapper img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
@@ -179,6 +191,45 @@
         </div>
         <div class="description">
             Corner Pin Parallax
+        </div>
+    </section>
+
+    <!-- Scroll-based Marquee -->
+    <section style="padding: 50px 0;">
+        <div style="width: 100%; overflow: hidden;">
+            <div class="marquee-wrapper" 
+                 data-parallax 
+                 data-animate="marquee" 
+                 data-direction="-y" 
+                 data-marquee-infinite="true"
+                 data-marquee-speed="25"
+                 data-easing="none"
+                 style="gap:0;">
+                <h1 style="margin:0; font-size:140px;">Hello World</h1>
+                <h1 style="margin:0; font-size:140px;">Hello World</h1>
+                <h1 style="margin:0; font-size:140px;">Hello World</h1>
+                <h1 style="margin:0; font-size:140px;">Hello World</h1>
+                <h1 style="margin:0; font-size:140px;">Hello World</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Smooth Scroll-based Marquee -->
+    <section style="padding: 50px 0;">
+        <div style="width: 100%; overflow: hidden;">
+            <div class="marquee-wrapper" 
+                 data-parallax 
+                 data-animate="marquee" 
+                 data-direction="-x" 
+                 data-marquee-infinite="true"
+                 data-marquee-speed="5"
+                 data-easing="power2.inOut">
+                <img src="https://picsum.photos/200/200?15" alt="Marquee 1">
+                <img src="https://picsum.photos/200/200?16" alt="Marquee 2">
+                <img src="https://picsum.photos/200/200?17" alt="Marquee 3">
+                <img src="https://picsum.photos/200/200?18" alt="Marquee 4">
+                <img src="https://picsum.photos/200/200?19" alt="Marquee 5">
+            </div>
         </div>
     </section>
 
