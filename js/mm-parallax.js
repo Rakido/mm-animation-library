@@ -23,6 +23,62 @@ class MoonMoonParallax {
             const scrub = scrubAttr === 'true' ? true : (scrubAttr ? parseFloat(scrubAttr) : false);
             const pinPosition = element.dataset.parallaxPin;
             const animate = element.dataset.animate;
+            const hasImageParallax = element.hasAttribute('data-image-parallax');
+
+            // If it's an image parallax
+            if (hasImageParallax) {
+                const image = element.querySelector('img');
+                if (image) {
+                    const direction = element.dataset.direction || 'y';
+                    const speed = parseFloat(element.dataset.speed) || 35;
+                    const scrubAttr = element.getAttribute('data-scrub');
+                    const scrub = scrubAttr === 'true' ? true : (scrubAttr ? parseFloat(scrubAttr) : true);
+                    const hasZoom = element.getAttribute('data-zoom') === 'true';
+                    const zoomPercentage = parseFloat(element.dataset.zoomPercentage) || 1.5;
+
+                    // Set initial position based on direction
+                    const initialPosition = {
+                        'x': { xPercent: -speed/2 },
+                        '-x': { xPercent: speed/2 },
+                        'y': { yPercent: -speed/2 },
+                        '-y': { yPercent: speed/2 }
+                    }[direction] || { yPercent: -speed/2 };
+
+                    // Set final position
+                    const finalPosition = {
+                        'x': { xPercent: speed/2 },
+                        '-x': { xPercent: -speed/2 },
+                        'y': { yPercent: speed/2 },
+                        '-y': { yPercent: -speed/2 }
+                    }[direction] || { yPercent: speed/2 };
+
+                    // Add zoom if enabled
+                    if (hasZoom) {
+                        initialPosition.scale = 1;
+                        finalPosition.scale = zoomPercentage;
+                    }
+
+                    // Set initial position
+                    gsap.set(image, {
+                        ...initialPosition,
+                        transformOrigin: 'center center'
+                    });
+
+                    // Create the animation
+                    gsap.to(image, {
+                        ...finalPosition,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: element,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: scrub,
+                            invalidateOnRefresh: true
+                        }
+                    });
+                }
+                return;
+            }
 
             // If it's a marquee animation
             if (animate === 'marquee') {
