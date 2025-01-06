@@ -70,6 +70,22 @@
     </style>
 </head>
 <body>
+    <!-- Add this new section -->
+    <section style="height: 100vh; background: #f5f5f5;">
+        <div class="image-parallax-container" 
+            data-parallax 
+            data-image-parallax 
+            data-direction="y"
+            data-speed="50"
+            data-zoom="true"
+            data-zoom-percentage="1.5"
+  
+            style="width: 100%; height: 100vh; position: relative; overflow: hidden;">
+            <img src="https://picsum.photos/1200/800?20" 
+                alt="Parallax Image" 
+                style="width: 100%; height: 100%; object-fit: cover; position: absolute;">
+        </div>
+    </section>
     <!-- Basic Vertical Parallax with default scrub -->
     <section>
         <div class="parallax-wrapper">
@@ -230,6 +246,70 @@
                 <img src="https://picsum.photos/200/200?18" alt="Marquee 4">
                 <img src="https://picsum.photos/200/200?19" alt="Marquee 5">
             </div>
+        </div>
+    </section>
+
+    <!-- Vertical Parallax Image (Bottom to Top) -->
+    <section style="height: 100vh; background: #f5f5f5;">
+        <div class="image-parallax-container" 
+             data-parallax 
+             data-image-parallax
+             data-direction="y"
+             data-speed="50"
+             data-scrub="1.5"
+             style="width: 50%; height: 70vh; position: relative; overflow: hidden;">
+            <img src="https://picsum.photos/1200/800?20" 
+                 alt="Parallax Image" 
+                 style="width: 100%; height: 120%; object-fit: cover; position: absolute; top: -10%;">
+        </div>
+    </section>
+
+    <!-- Horizontal Parallax Image (Right to Left) -->
+    <section style="height: 100vh; background: #f5f5f5;">
+        <div class="image-parallax-container" 
+             data-parallax 
+             data-image-parallax
+             data-direction="-x"
+             data-speed="25"
+             data-scrub="true"
+             style="width: 50%; height: 70vh; position: relative; overflow: hidden;">
+            <img src="https://picsum.photos/1200/800?21" 
+                 alt="Parallax Image" 
+                 style="width: 120%; height: 100%; object-fit: cover; position: absolute; left: -10%;">
+        </div>
+    </section>
+
+    <!-- Image Parallax with Zoom -->
+    <section style="height: 100vh; background: #f5f5f5;">
+        <div class="image-parallax-container" 
+             data-parallax 
+             data-image-parallax
+             data-direction="y"
+             data-speed="50"
+             data-zoom="true"
+             data-zoom-percentage="1.5"
+             data-scrub="1.5"
+             style="width: 100%; height: 100vh; position: relative; overflow: hidden;">
+            <img src="https://picsum.photos/1200/800?20" 
+                 alt="Parallax Image" 
+                 style="width: 100%; height: 100%; object-fit: cover; position: absolute;">
+        </div>
+    </section>
+
+    <!-- Image Parallax with Strong Zoom -->
+    <section style="height: 100vh; background: #f5f5f5;">
+        <div class="image-parallax-container" 
+             data-parallax 
+             data-image-parallax
+             data-direction="-y"
+             data-speed="25"
+             data-zoom="true"
+             data-zoom-percentage="2"
+             data-scrub="true"
+             style="width: 100%; height: 100vh; position: relative; overflow: hidden;">
+            <img src="https://picsum.photos/1200/800?21" 
+                 alt="Parallax Image" 
+                 style="width: 100%; height: 100%; object-fit: cover; position: absolute;">
         </div>
     </section>
 
