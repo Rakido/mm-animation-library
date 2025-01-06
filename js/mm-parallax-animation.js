@@ -82,6 +82,7 @@ class MoonMoonParallax {
 
             // If it's a marquee animation
             if (animate === 'marquee') {
+                const direction = element.dataset.direction || 'y';
                 this.initMarquee(element);
                 return;
             }
@@ -207,7 +208,7 @@ class MoonMoonParallax {
 
         Promise.all(loadPromises).then(() => {
             const speed = parseFloat(element.dataset.marqueeSpeed) || 50;
-            const direction = element.dataset.direction || '-x';
+            const direction = element.dataset.direction || 'y';
             const gap = parseInt(getComputedStyle(element).gap) || 0;
             const easingValue = element.dataset.easing || 'none';
             const scrubAttr = element.getAttribute('data-scrub');

@@ -23,7 +23,7 @@ Required dependencies:
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | data-parallax | boolean | - | Enables parallax effect |
-| data-parallax-direction | string | "y" | Direction of movement ("x", "y", "xy") |
+| data-parallax-direction | string | "y" | Direction of movement ("x", "y", "xy"). If not specified, defaults to "y" |
 | data-speed | number | 0.5 | Movement speed multiplier |
 | data-scrub | boolean/number | false | Smooth scrolling control |
 | data-start | string | "top bottom" | Start trigger position |
@@ -36,7 +36,7 @@ Required dependencies:
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | data-image-parallax | boolean | - | Activates image parallax mode |
-| data-direction | string | "y" | Movement direction ("y", "-y", "x", "-x") |
+| data-direction | string | "y" | Movement direction ("y", "-y", "x", "-x"). If not specified, defaults to "y" |
 | data-speed | number | 35 | Movement intensity |
 | data-zoom | boolean | false | Enable zoom effect |
 | data-zoom-percentage | number | 1.5 | Zoom intensity multiplier |
@@ -49,7 +49,7 @@ Required dependencies:
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | data-animate | string | - | Set to "marquee" |
-| data-direction | string | "-x" | Scroll direction ("-x", "x", "-y", "y") |
+| data-direction | string | "y" | Scroll direction ("-x", "x", "-y", "y"). If not specified, defaults to "y" |
 | data-marquee-infinite | boolean | false | Enable infinite loop |
 | data-marquee-speed | number | 50 | Animation speed |
 | data-easing | string | "none" | Animation easing |
