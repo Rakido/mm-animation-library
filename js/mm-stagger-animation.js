@@ -44,6 +44,8 @@ class MoonMoonStagger {
             const opacity = parseFloat(container.dataset.opacity) || 0;
             const scrub = container.dataset.scrub === 'true';
             const staggerMethod = container.dataset.staggerMethod || 'start';
+            // Add initial animation delay
+            const initialDelay = parseFloat(container.dataset.delay) || 0;
 
             // Get elements array based on stagger method
             let elementsArray = Array.from(elements);
@@ -60,7 +62,6 @@ class MoonMoonStagger {
                 case 'random':
                     elementsArray.sort(() => Math.random() - 0.5);
                     break;
-                // 'start' is default, no need to modify array
             }
 
             // Set initial states based on direction
@@ -85,12 +86,10 @@ class MoonMoonStagger {
                 }
             }
 
-            // Handle scale
             if (hasScale) {
                 initialState.scale = scale;
             }
 
-            // Handle rotation
             if (direction.includes('rotate')) {
                 initialState.rotation = direction.includes('left') ? rotate : -rotate;
             } else if (rotate) {
@@ -105,10 +104,10 @@ class MoonMoonStagger {
                 opacity: 1,
                 duration: scrub ? undefined : duration,
                 ease: scrub ? "none" : ease,
-                stagger: delay
+                stagger: delay,
+                delay: initialDelay
             };
 
-            // Add transformations to final state
             if (hasDirection) {
                 switch(direction) {
                     case 'x':
@@ -122,17 +121,14 @@ class MoonMoonStagger {
                 }
             }
 
-            // Add scale to final state if specified
             if (hasScale) {
                 finalState.scale = 1;
             }
 
-            // Add rotation to final state if specified
             if (direction.includes('rotate') || rotate) {
                 finalState.rotation = 0;
             }
 
-            // Add ScrollTrigger configuration
             finalState.scrollTrigger = {
                 trigger: container,
                 start: start,
