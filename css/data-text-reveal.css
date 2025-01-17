@@ -1,29 +1,3 @@
-
-.large-title {
-    background-color: #000;
-}
-
-.large-title h1, h2 {
-    font-size: 5rem;
-    text-align: center;
-    color: white;
-}
-
-.paragraph {
-    background-color: white;
-}
-
-.paragraph p {
-    font-size: 24px;
-    width: 70%;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-.empty {
-    background-color: #d0d0d0;
-}
-
 [data-animate="shutter-word"] {
     overflow: hidden;
 }
@@ -32,4 +6,46 @@
     display: inline-block;
     overflow: hidden;
     vertical-align: top;
+}
+
+/* Base styles for split text containers */
+[data-scroll-text-reveal] {
+    line-height: 1; /* Reset line height */
+}
+
+/* Handle line splits */
+[data-scroll-text-reveal] .split-line {
+    display: block;
+    overflow: hidden;
+    line-height: 1.1; /* Slightly larger than 1 to prevent clipping */
+}
+
+/* Handle word splits */
+[data-scroll-text-reveal] .word {
+    display: inline-block;
+    line-height: 1;
+    margin-right: 0.25em; /* Space between words */
+}
+
+/* Handle char splits */
+[data-scroll-text-reveal] .char {
+    display: inline-block;
+    line-height: 1;
+}
+
+/* Container adjustments for line animations */
+[data-scroll-text-reveal][data-splitting="lines"] {
+    overflow: hidden;
+}
+
+[data-scroll-text-reveal][data-splitting="lines"] .line {
+    display: block;
+    line-height: 1.1;
+    position: relative;
+}
+
+/* Preserve whitespace */
+[data-scroll-text-reveal] .whitespace {
+    display: inline-block;
+    width: 0.25em;
 }
