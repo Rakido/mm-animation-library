@@ -44,8 +44,8 @@ class MoonMoonStagger {
             const opacity = parseFloat(container.dataset.opacity) || 0;
             const scrub = container.dataset.scrub === 'true';
             const staggerMethod = container.dataset.staggerMethod || 'start';
-            // Add initial animation delay
             const initialDelay = parseFloat(container.dataset.delay) || 0;
+            const revert = container.dataset.revert === 'true';
 
             // Get elements array based on stagger method
             let elementsArray = Array.from(elements);
@@ -129,13 +129,14 @@ class MoonMoonStagger {
                 finalState.rotation = 0;
             }
 
+            // Configure ScrollTrigger
             finalState.scrollTrigger = {
                 trigger: container,
                 start: start,
                 end: scrub ? 'bottom top' : undefined,
                 scrub: scrub,
-                toggleActions: scrub ? undefined : 'play none none none',
-                once: !scrub
+                toggleActions: revert ? "play reverse play reverse" : "play none none none",
+                once: !revert && !scrub
             };
 
             // Use the ordered elements array for the animation
