@@ -49,25 +49,10 @@ class MoonMoonStagger {
             const initialDelay = parseFloat(container.dataset.delay) || 0;
             const revert = container.dataset.revert === 'true';
 
-            // Convert scale position to transform origin
-            let transformOrigin = 'center center';
-            switch(scalePosition) {
-                case 'left':
-                    transformOrigin = 'left center';
-                    break;
-                case 'right':
-                    transformOrigin = 'right center';
-                    break;
-                case 'top':
-                    transformOrigin = 'center top';
-                    break;
-                case 'bottom':
-                    transformOrigin = 'center bottom';
-                    break;
-            }
-
             // Get elements array based on stagger method
             let elementsArray = Array.from(elements);
+            
+            // Apply stagger method ordering to all elements first
             switch(staggerMethod) {
                 case 'end':
                     elementsArray = elementsArray.reverse();
@@ -83,104 +68,74 @@ class MoonMoonStagger {
                     break;
             }
 
-            // Set initial states based on direction
-            const initialState = {
-                opacity: opacity,
-                transformOrigin: transformOrigin
-            };
-
-            if (hasDirection) {
-                switch(direction) {
-                    case 'x':
-                        initialState.x = -distance;
-                        break;
-                    case '-x':
-                        initialState.x = distance;
-                        break;
-                    case 'y':
-                        initialState.y = -distance;
-                        break;
-                    case '-y':
-                        initialState.y = distance;
-                        break;
+            // Create timeline for coordinated animation
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: container,
+                    start: start,
+                    end: scrub ? 'bottom top' : undefined,
+                    scrub: scrub,
+                    toggleActions: revert ? "play reverse play reverse" : "play none none none",
+                    once: !revert && !scrub
                 }
-            }
+            });
 
-            if (hasScale) {
-                switch(scaleAxis) {
-                    case 'x':
-                        initialState.scaleX = scale;
-                        break;
-                    case 'y':
-                        initialState.scaleY = scale;
-                        break;
-                    default: // 'xy'
-                        initialState.scale = scale;
-                        break;
+            // Animate each element in sequence
+            elementsArray.forEach((element, index) => {
+                const hasScale = element.hasAttribute('data-scale');
+                
+                if (hasScale) {
+                    // Handle scale animation
+                    const scaleValue = element.hasAttribute('data-scale') ? 
+                        parseFloat(element.dataset.scale) : scale;
+                    
+                    const scaleAxis = element.dataset.scaleAxis || 'xy';
+                    const scalePosition = element.dataset.scalePosition || 'center';
+                    
+                    // Set transform origin
+                    let transformOrigin = 'center center';
+                    switch(scalePosition) {
+                        case 'left': transformOrigin = 'left center'; break;
+                        case 'right': transformOrigin = 'right center'; break;
+                        case 'top': transformOrigin = 'center top'; break;
+                        case 'bottom': transformOrigin = 'center bottom'; break;
+                    }
+
+                    // Set initial state
+                    const initialState = { transformOrigin };
+                    switch(scaleAxis) {
+                        case 'x': initialState.scaleX = scaleValue; break;
+                        case 'y': initialState.scaleY = scaleValue; break;
+                        default: initialState.scale = scaleValue;
+                    }
+                    
+                    gsap.set(element, initialState);
+
+                    // Animate to final state
+                    const finalState = {
+                        duration: duration,
+                        ease: ease,
+                        delay: index * delay // Apply stagger through delay
+                    };
+                    
+                    switch(scaleAxis) {
+                        case 'x': finalState.scaleX = 1; break;
+                        case 'y': finalState.scaleY = 1; break;
+                        default: finalState.scale = 1;
+                    }
+
+                    tl.to(element, finalState, 0);
+                } else {
+                    // Handle fade animation
+                    gsap.set(element, { opacity: opacity });
+                    tl.to(element, {
+                        opacity: 1,
+                        duration: duration,
+                        ease: ease,
+                        delay: index * delay // Apply stagger through delay
+                    }, 0);
                 }
-            }
-
-            if (direction.includes('rotate')) {
-                initialState.rotation = direction.includes('left') ? rotate : -rotate;
-            } else if (rotate) {
-                initialState.rotation = rotate;
-            }
-
-            // Set initial state
-            gsap.set(elements, initialState);
-
-            // Define final animation state
-            const finalState = {
-                opacity: 1,
-                duration: scrub ? undefined : duration,
-                ease: scrub ? "none" : ease,
-                stagger: delay,
-                delay: initialDelay
-            };
-
-            if (hasDirection) {
-                switch(direction) {
-                    case 'x':
-                    case '-x':
-                        finalState.x = 0;
-                        break;
-                    case 'y':
-                    case '-y':
-                        finalState.y = 0;
-                        break;
-                }
-            }
-
-            if (hasScale) {
-                switch(scaleAxis) {
-                    case 'x':
-                        finalState.scaleX = 1;
-                        break;
-                    case 'y':
-                        finalState.scaleY = 1;
-                        break;
-                    default: // 'xy'
-                        finalState.scale = 1;
-                        break;
-                }
-            }
-
-            if (direction.includes('rotate') || rotate) {
-                finalState.rotation = 0;
-            }
-
-            // Configure ScrollTrigger
-            finalState.scrollTrigger = {
-                trigger: container,
-                start: start,
-                end: scrub ? 'bottom top' : undefined,
-                scrub: scrub,
-                toggleActions: revert ? "play reverse play reverse" : "play none none none",
-                once: !revert && !scrub
-            };
-
-            // Use the ordered elements array for the animation
-            gsap.to(elementsArray, finalState);
+            });
         });
     }
 }

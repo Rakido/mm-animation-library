@@ -44,9 +44,24 @@
             border-radius: 50%;
             background: #ff4444;
         }
+        .line {
+            height: 2px;
+            background: red;    
+            width: 100%;
+        }
     </style>
 </head>
 <body>
+    <section style="display: flex; flex-direction: column; gap: 10px;" data-stagger-reveal data-stagger-delay="0.1">
+        <h1>Hello world</h1>
+        <div class="line" data-scale="0.0" data-scale-axis="x" data-scale-position="left"></div>
+        <h1>Hello world</h1>
+        <div class="line" data-scale="0.0" data-scale-axis="x" data-scale-position="left"></div>
+        <h1>Hello world</h1>
+        <div class="line" data-scale="0.0" data-scale-axis="x" data-scale-position="left"></div>
+        <h1>Hello world</h1>
+        <div class="line" data-scale="0.0" data-scale-axis="x" data-scale-position="left"></div>
+    </section>
     <section>
         <h2>Line Animation</h2>
         <div data-scale="0.3" data-scale-axis="x" data-stagger-reveal data-stagger-delay="0.1" data-scale-position="left">
