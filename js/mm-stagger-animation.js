@@ -41,11 +41,30 @@ class MoonMoonStagger {
             const rotate = parseInt(container.dataset.rotate) || 0;
             const hasScale = container.hasAttribute('data-scale');
             const scale = hasScale ? parseFloat(container.dataset.scale) : 1;
+            const scalePosition = container.dataset.scalePosition || 'center';
+            const scaleAxis = container.dataset.scaleAxis || 'xy';
             const opacity = parseFloat(container.dataset.opacity) || 0;
             const scrub = container.dataset.scrub === 'true';
             const staggerMethod = container.dataset.staggerMethod || 'start';
             const initialDelay = parseFloat(container.dataset.delay) || 0;
             const revert = container.dataset.revert === 'true';
+
+            // Convert scale position to transform origin
+            let transformOrigin = 'center center';
+            switch(scalePosition) {
+                case 'left':
+                    transformOrigin = 'left center';
+                    break;
+                case 'right':
+                    transformOrigin = 'right center';
+                    break;
+                case 'top':
+                    transformOrigin = 'center top';
+                    break;
+                case 'bottom':
+                    transformOrigin = 'center bottom';
+                    break;
+            }
 
             // Get elements array based on stagger method
             let elementsArray = Array.from(elements);
@@ -66,7 +85,8 @@ class MoonMoonStagger {
 
             // Set initial states based on direction
             const initialState = {
-                opacity: opacity
+                opacity: opacity,
+                transformOrigin: transformOrigin
             };
 
             if (hasDirection) {
@@ -87,7 +107,17 @@ class MoonMoonStagger {
             }
 
             if (hasScale) {
-                initialState.scale = scale;
+                switch(scaleAxis) {
+                    case 'x':
+                        initialState.scaleX = scale;
+                        break;
+                    case 'y':
+                        initialState.scaleY = scale;
+                        break;
+                    default: // 'xy'
+                        initialState.scale = scale;
+                        break;
+                }
             }
 
             if (direction.includes('rotate')) {
@@ -122,7 +152,17 @@ class MoonMoonStagger {
             }
 
             if (hasScale) {
-                finalState.scale = 1;
+                switch(scaleAxis) {
+                    case 'x':
+                        finalState.scaleX = 1;
+                        break;
+                    case 'y':
+                        finalState.scaleY = 1;
+                        break;
+                    default: // 'xy'
+                        finalState.scale = 1;
+                        break;
+                }
             }
 
             if (direction.includes('rotate') || rotate) {
