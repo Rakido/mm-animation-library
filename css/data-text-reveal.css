@@ -8,32 +8,27 @@
     vertical-align: top;
 }
 
-/* Base styles for split text containers */
 [data-scroll-text-reveal] {
-    line-height: 1; /* Reset line height */
+    line-height: 1; 
 }
 
-/* Handle line splits */
 [data-scroll-text-reveal] .split-line {
     display: block;
     overflow: hidden;
-    line-height: 1.1; /* Slightly larger than 1 to prevent clipping */
+    line-height: 1.1; 
 }
 
-/* Handle word splits */
 [data-scroll-text-reveal] .word {
     display: inline-block;
     line-height: 1;
-    margin-right: 0.25em; /* Space between words */
+    margin-right: 0.25em; 
 }
 
-/* Handle char splits */
 [data-scroll-text-reveal] .char {
     display: inline-block;
     line-height: 1;
 }
 
-/* Container adjustments for line animations */
 [data-scroll-text-reveal][data-splitting="lines"] {
     overflow: hidden;
 }
@@ -44,7 +39,6 @@
     position: relative;
 }
 
-/* Preserve whitespace */
 [data-scroll-text-reveal] .whitespace {
     display: inline-block;
     width: 0.25em;
