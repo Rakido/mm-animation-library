@@ -39,10 +39,12 @@ class MoonMoonStagger {
             const direction = container.dataset.direction || 'fade';
             const distance = parseInt(container.dataset.distance) || 50;
             const rotate = parseInt(container.dataset.rotate) || 0;
-            const hasScale = container.hasAttribute('data-scale');
-            const scale = hasScale ? parseFloat(container.dataset.scale) : 1;
-            const scalePosition = container.dataset.scalePosition || 'center';
-            const scaleAxis = container.dataset.scaleAxis || 'xy';
+            
+            // Get container scale parameters
+            const containerScale = container.hasAttribute('data-scale') ? 
+                parseFloat(container.dataset.scale) : null;
+            const containerScaleAxis = container.dataset.scaleAxis || 'xy';
+            const containerScalePosition = container.dataset.scalePosition || 'center';
             const opacity = parseFloat(container.dataset.opacity) || 0;
             const scrub = container.dataset.scrub === 'true';
             const staggerMethod = container.dataset.staggerMethod || 'start';
@@ -51,8 +53,6 @@ class MoonMoonStagger {
 
             // Get elements array based on stagger method
             let elementsArray = Array.from(elements);
-            
-            // Apply stagger method ordering to all elements first
             switch(staggerMethod) {
                 case 'end':
                     elementsArray = elementsArray.reverse();
@@ -80,61 +80,119 @@ class MoonMoonStagger {
                 }
             });
 
-            // Animate each element in sequence
-            elementsArray.forEach((element, index) => {
-                const hasScale = element.hasAttribute('data-scale');
-                
-                if (hasScale) {
-                    // Handle scale animation
-                    const scaleValue = element.hasAttribute('data-scale') ? 
-                        parseFloat(element.dataset.scale) : scale;
-                    
-                    const scaleAxis = element.dataset.scaleAxis || 'xy';
-                    const scalePosition = element.dataset.scalePosition || 'center';
-                    
-                    // Set transform origin
-                    let transformOrigin = 'center center';
-                    switch(scalePosition) {
-                        case 'left': transformOrigin = 'left center'; break;
-                        case 'right': transformOrigin = 'right center'; break;
-                        case 'top': transformOrigin = 'center top'; break;
-                        case 'bottom': transformOrigin = 'center bottom'; break;
-                    }
+            // Set initial states for all elements
+            elementsArray.forEach(element => {
+                const initialState = {
+                    opacity: opacity
+                };
 
-                    // Set initial state
-                    const initialState = { transformOrigin };
-                    switch(scaleAxis) {
-                        case 'x': initialState.scaleX = scaleValue; break;
-                        case 'y': initialState.scaleY = scaleValue; break;
-                        default: initialState.scale = scaleValue;
+                // Handle direction
+                if (hasDirection) {
+                    switch(direction) {
+                        case 'x': initialState.x = -distance; break;
+                        case '-x': initialState.x = distance; break;
+                        case 'y': initialState.y = -distance; break;
+                        case '-y': initialState.y = distance; break;
                     }
-                    
-                    gsap.set(element, initialState);
-
-                    // Animate to final state
-                    const finalState = {
-                        duration: duration,
-                        ease: ease,
-                        delay: index * delay // Apply stagger through delay
-                    };
-                    
-                    switch(scaleAxis) {
-                        case 'x': finalState.scaleX = 1; break;
-                        case 'y': finalState.scaleY = 1; break;
-                        default: finalState.scale = 1;
-                    }
-
-                    tl.to(element, finalState, 0);
-                } else {
-                    // Handle fade animation
-                    gsap.set(element, { opacity: opacity });
-                    tl.to(element, {
-                        opacity: 1,
-                        duration: duration,
-                        ease: ease,
-                        delay: index * delay // Apply stagger through delay
-                    }, 0);
                 }
+
+                // Check if element has its own scale settings
+                const hasElementScale = element.hasAttribute('data-scale');
+                if (hasElementScale) {
+                    const elementScale = parseFloat(element.dataset.scale);
+                    const elementScaleAxis = element.dataset.scaleAxis || 'xy';
+                    const elementScalePosition = element.dataset.scalePosition || 'center';
+
+                    // Set transform origin for element
+                    initialState.transformOrigin = (() => {
+                        switch(elementScalePosition) {
+                            case 'left': return 'left center';
+                            case 'right': return 'right center';
+                            case 'top': return 'center top';
+                            case 'bottom': return 'center bottom';
+                            default: return 'center center';
+                        }
+                    })();
+
+                    // Set scale based on element's axis
+                    switch(elementScaleAxis) {
+                        case 'x':
+                            initialState.scaleX = elementScale;
+                            break;
+                        case 'y':
+                            initialState.scaleY = elementScale;
+                            break;
+                        default:
+                            initialState.scale = elementScale;
+                    }
+                }
+                // If no element scale, use container scale if available
+                else if (containerScale !== null) {
+                    initialState.transformOrigin = (() => {
+                        switch(containerScalePosition) {
+                            case 'left': return 'left center';
+                            case 'right': return 'right center';
+                            case 'top': return 'center top';
+                            case 'bottom': return 'center bottom';
+                            default: return 'center center';
+                        }
+                    })();
+
+                    switch(containerScaleAxis) {
+                        case 'x':
+                            initialState.scaleX = containerScale;
+                            break;
+                        case 'y':
+                            initialState.scaleY = containerScale;
+                            break;
+                        default:
+                            initialState.scale = containerScale;
+                    }
+                }
+
+                gsap.set(element, initialState);
+            });
+
+            // Animate each element
+            elementsArray.forEach((element, index) => {
+                const finalState = {
+                    opacity: 1,
+                    x: 0,
+                    y: 0,
+                    duration: duration,
+                    ease: ease,
+                    delay: index * delay + initialDelay
+                };
+
+                // Handle scale animation
+                const hasElementScale = element.hasAttribute('data-scale');
+                if (hasElementScale) {
+                    const elementScaleAxis = element.dataset.scaleAxis || 'xy';
+                    switch(elementScaleAxis) {
+                        case 'x':
+                            finalState.scaleX = 1;
+                            break;
+                        case 'y':
+                            finalState.scaleY = 1;
+                            break;
+                        default:
+                            finalState.scale = 1;
+                    }
+                }
+                else if (containerScale !== null) {
+                    switch(containerScaleAxis) {
+                        case 'x':
+                            finalState.scaleX = 1;
+                            break;
+                        case 'y':
+                            finalState.scaleY = 1;
+                            break;
+                        default:
+                            finalState.scale = 1;
+                    }
+                }
+
+                tl.to(element, finalState, 0);
             });
         });
     }
