@@ -62,14 +62,20 @@ class MoonMoonText {
             const scrub = scrubAttr === 'true' ? true : (scrubAttr ? parseFloat(scrubAttr) : false);
             const startTrigger = element.dataset.start || "top bottom-=10%";
             const endTrigger = element.dataset.end || "bottom top+=10%";
+            const revert = element.hasAttribute('data-revert') ? 
+                element.dataset.revert === 'true' : true; // Default to true if not specified
 
-            // Update ScrollTrigger configuration in animations
+            // Update ScrollTrigger configuration
             const scrollTriggerConfig = {
                 trigger: element,
                 start: startTrigger,
                 end: endTrigger,
                 scrub: scrub,
-                toggleActions: "play none none reverse"
+                // Change toggleActions based on revert parameter
+                toggleActions: revert ? 
+                    "play reverse play reverse" : // If revert is true, play in both directions
+                    "play none none none", // If revert is false, play once and stay
+                once: !revert // Only play once if revert is false
             };
 
             let textContent;
