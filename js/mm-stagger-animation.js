@@ -49,7 +49,7 @@ class MoonMoonStagger {
             const scrub = container.dataset.scrub === 'true';
             const staggerMethod = container.dataset.staggerMethod || 'start';
             const initialDelay = parseFloat(container.dataset.delay) || 0;
-            const revert = container.dataset.revert === 'true';
+            const replay = container.dataset.replay === 'true';
 
             // Get elements array based on stagger method
             let elementsArray = Array.from(elements);
@@ -75,8 +75,10 @@ class MoonMoonStagger {
                     start: start,
                     end: scrub ? 'bottom top' : undefined,
                     scrub: scrub,
-                    toggleActions: revert ? "play reverse play reverse" : "play none none none",
-                    once: !revert && !scrub
+                    toggleActions: replay ? 
+                        "play reverse play reverse" : // For replay
+                        "play none none none", // Default behavior
+                    once: !replay // Only play once if no replay
                 }
             });
 
