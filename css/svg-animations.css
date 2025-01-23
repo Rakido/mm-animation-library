@@ -1,0 +1,9 @@
+[data-svg-stagger] {
+    display: inline-block;
+    position: relative;
+}
+
+[data-svg-stagger] svg {
+    transform-origin: center center;
+}
+
