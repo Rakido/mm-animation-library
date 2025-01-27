@@ -29,6 +29,31 @@ class MoonMoonStagger {
         const staggerElements = document.querySelectorAll('[data-stagger-reveal]');
         
         staggerElements.forEach(container => {
+            const isClickEvent = container.dataset.clickEvent === 'true';
+            
+            // Skip scroll-based animation if it's a click-only event
+            if (isClickEvent) {
+                const elements = container.children;
+                const delay = parseFloat(container.dataset.staggerDelay) || 0.2;
+                const duration = parseFloat(container.dataset.duration) || 1;
+                const hasDirection = container.hasAttribute('data-direction');
+                const direction = container.dataset.direction || 'fade';
+                const distance = parseInt(container.dataset.distance) || 50;
+
+                // Set initial states
+                const initialState = { opacity: 0 };
+                if (hasDirection) {
+                    switch(direction) {
+                        case 'x': initialState.x = -distance; break;
+                        case '-x': initialState.x = distance; break;
+                        case 'y': initialState.y = -distance; break;
+                        case '-y': initialState.y = distance; break;
+                    }
+                }
+                gsap.set(elements, initialState);
+                return; // Skip scroll trigger setup
+            }
+
             const elements = container.children;
             const delay = parseFloat(container.dataset.staggerDelay) || 0.2;
             const duration = parseFloat(container.dataset.duration) || 1;

@@ -99,6 +99,7 @@
                  data-stagger-delay="0.2" 
                  data-distance="100"
                  data-stagger-method="end"
+                 data-click-event="true"
                  id="myId">
                 <div class="card">Card 1</div>
                 <div class="card">Card 2</div>
@@ -282,8 +283,9 @@
             Trigger Stagger Animation
         </button>
 
-        <!-- Stagger container that will be animated -->
+        <!-- Stagger container that will only animate on click -->
         <div data-stagger-reveal 
+             data-click-event="true"
              data-direction="x" 
              data-stagger-delay="0.2" 
              data-distance="100"
