@@ -5,7 +5,9 @@ class MoonMoonStagger {
     }
 
     init() {
+        gsap.registerPlugin(ScrollTrigger, CustomEase);
         this.initStaggerAnimation();
+        this.initClickTriggers();
     }
 
     // Parse easing value helper
@@ -24,9 +26,6 @@ class MoonMoonStagger {
     }
 
     initStaggerAnimation() {
-        // Register necessary plugins
-        gsap.registerPlugin(ScrollTrigger, CustomEase);
-
         const staggerElements = document.querySelectorAll('[data-stagger-reveal]');
         
         staggerElements.forEach(container => {
@@ -196,6 +195,73 @@ class MoonMoonStagger {
 
                 tl.to(element, finalState, 0);
             });
+        });
+    }
+
+    // Add method to play stagger animation
+    playStaggerAnimation(container) {
+        const elements = container.children;
+        const delay = parseFloat(container.dataset.staggerDelay) || 0.2;
+        const duration = parseFloat(container.dataset.duration) || 1;
+        const ease = this.parseEasing(container.dataset.easing);
+        const hasDirection = container.hasAttribute('data-direction');
+        const direction = container.dataset.direction || 'fade';
+        const distance = parseInt(container.dataset.distance) || 50;
+        const staggerMethod = container.dataset.staggerMethod || 'start';
+
+        // Get elements array based on stagger method
+        let elementsArray = Array.from(elements);
+        switch(staggerMethod) {
+            case 'end':
+                elementsArray = elementsArray.reverse();
+                break;
+            case 'center':
+                elementsArray.sort((a, b) => {
+                    return Math.abs(elementsArray.length / 2 - elementsArray.indexOf(a)) - 
+                           Math.abs(elementsArray.length / 2 - elementsArray.indexOf(b));
+                });
+                break;
+            case 'random':
+                elementsArray.sort(() => Math.random() - 0.5);
+                break;
+        }
+
+        // Set initial states
+        const initialState = { opacity: 0 };
+        if (hasDirection) {
+            switch(direction) {
+                case 'x': initialState.x = -distance; break;
+                case '-x': initialState.x = distance; break;
+                case 'y': initialState.y = -distance; break;
+                case '-y': initialState.y = distance; break;
+            }
+        }
+
+        gsap.set(elementsArray, initialState);
+
+        // Create and play animation
+        return gsap.to(elementsArray, {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            duration: duration,
+            stagger: delay,
+            ease: ease
+        });
+    }
+
+    initClickTriggers() {
+        // Handle click events that target stagger animations
+        document.addEventListener('click', (e) => {
+            const clickTarget = e.target;
+            if (clickTarget.hasAttribute('data-stagger-trigger')) {
+                const targetId = clickTarget.getAttribute('data-stagger-trigger');
+                const targetContainer = document.getElementById(targetId);
+                
+                if (targetContainer && targetContainer.hasAttribute('data-stagger-reveal')) {
+                    this.playStaggerAnimation(targetContainer);
+                }
+            }
         });
     }
 }
