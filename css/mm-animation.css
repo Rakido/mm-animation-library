@@ -1,0 +1,52 @@
+/* Data Text Reveal */
+[data-animate="shutter-word"] {
+  overflow: hidden;
+}
+
+[data-animate="shutter-word"] .word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+[data-scroll-text-reveal] {
+  line-height: 1; 
+}
+
+[data-scroll-text-reveal] .split-line {
+  display: block;
+  overflow: hidden;
+  line-height: 1.1; 
+}
+
+[data-scroll-text-reveal] .word {
+  display: inline-block;
+  line-height: 1;
+  margin-right: 0.25em; 
+}
+
+[data-scroll-text-reveal] .char {
+  display: inline-block;
+  line-height: 1;
+}
+
+[data-scroll-text-reveal][data-splitting="lines"] {
+  overflow: hidden;
+}
+
+[data-scroll-text-reveal][data-splitting="lines"] .line {
+  display: block;
+  line-height: 1.1;
+  position: relative;
+}
+
+[data-scroll-text-reveal] .whitespace {
+  display: inline-block;
+  width: 0.25em;
+}
+
+/* Data Parallax */
+[data-parallax] {
+  position: relative;
+  overflow: hidden;
+}
