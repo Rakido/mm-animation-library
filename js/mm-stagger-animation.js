@@ -33,25 +33,22 @@ class MoonMoonStagger {
             
             // Skip scroll-based animation if it's a click-only event
             if (isClickEvent) {
+                // Just set initial states
                 const elements = container.children;
-                const delay = parseFloat(container.dataset.staggerDelay) || 0.2;
-                const duration = parseFloat(container.dataset.duration) || 1;
-                const hasDirection = container.hasAttribute('data-direction');
-                const direction = container.dataset.direction || 'fade';
-                const distance = parseInt(container.dataset.distance) || 50;
-
-                // Set initial states
-                const initialState = { opacity: 0 };
-                if (hasDirection) {
-                    switch(direction) {
-                        case 'x': initialState.x = -distance; break;
-                        case '-x': initialState.x = distance; break;
-                        case 'y': initialState.y = -distance; break;
-                        case '-y': initialState.y = distance; break;
+                Array.from(elements).forEach(element => {
+                    if (element.classList.contains('line')) {
+                        const scaleAxis = element.dataset.scaleAxis || 'xy';
+                        gsap.set(element, {
+                            transformOrigin: element.dataset.scalePosition === 'left' ? 'left center' : 'center center',
+                            scaleX: scaleAxis === 'x' ? 0 : 1,
+                            scaleY: scaleAxis === 'y' ? 0 : 1,
+                            scale: scaleAxis === 'xy' ? 0 : 1
+                        });
+                    } else {
+                        gsap.set(element, { opacity: 0 });
                     }
-                }
-                gsap.set(elements, initialState);
-                return; // Skip scroll trigger setup
+                });
+                return;
             }
 
             const elements = container.children;
@@ -224,7 +221,7 @@ class MoonMoonStagger {
     }
 
     // Add method to play stagger animation
-    playStaggerAnimation(container) {
+    playStaggerAnimation(container, reverse = false) {
         const elements = container.children;
         const delay = parseFloat(container.dataset.staggerDelay) || 0.2;
         const duration = parseFloat(container.dataset.duration) || 1;
@@ -232,51 +229,103 @@ class MoonMoonStagger {
         const hasDirection = container.hasAttribute('data-direction');
         const direction = container.dataset.direction || 'fade';
         const distance = parseInt(container.dataset.distance) || 50;
-        const staggerMethod = container.dataset.staggerMethod || 'start';
+        const shouldReverse = container.dataset.clickReverse === 'true';
 
-        // Get elements array based on stagger method
+        // Get elements array
         let elementsArray = Array.from(elements);
-        switch(staggerMethod) {
-            case 'end':
-                elementsArray = elementsArray.reverse();
-                break;
-            case 'center':
-                elementsArray.sort((a, b) => {
-                    return Math.abs(elementsArray.length / 2 - elementsArray.indexOf(a)) - 
-                           Math.abs(elementsArray.length / 2 - elementsArray.indexOf(b));
-                });
-                break;
-            case 'random':
-                elementsArray.sort(() => Math.random() - 0.5);
-                break;
+        
+        // Create animation timeline
+        const tl = gsap.timeline();
+
+        // Always reset initial states for lines when opening
+        if (!reverse) {
+            elementsArray.forEach(element => {
+                if (element.classList.contains('line')) {
+                    // Force scaleX to 0 for lines
+                    gsap.set(element, {
+                        transformOrigin: element.dataset.scalePosition === 'left' ? 'left center' : 'center center',
+                        scaleX: 0,
+                        immediateRender: true
+                    });
+                } else {
+                    const initialState = { opacity: 0 };
+                    if (hasDirection) {
+                        switch(direction) {
+                            case 'x': initialState.x = -distance; break;
+                            case '-x': initialState.x = distance; break;
+                            case 'y': initialState.y = -distance; break;
+                            case '-y': initialState.y = distance; break;
+                        }
+                    }
+                    gsap.set(element, initialState);
+                }
+            });
         }
 
-        // Set initial states
-        const initialState = { opacity: 0 };
-        if (hasDirection) {
-            switch(direction) {
-                case 'x': initialState.x = -distance; break;
-                case '-x': initialState.x = distance; break;
-                case 'y': initialState.y = -distance; break;
-                case '-y': initialState.y = distance; break;
-            }
+        if (reverse && shouldReverse) {
+            // Reverse array for closing with stagger
+            elementsArray = elementsArray.reverse();
+            
+            // Animate elements in sequence
+            elementsArray.forEach((element, index) => {
+                if (element.hasAttribute('data-scale')) {
+                    const scaleAxis = element.dataset.scaleAxis || 'x';
+                    const scaleProperty = `scale${scaleAxis.toUpperCase()}`;
+                    
+                    tl.to(element, {
+                        [scaleProperty]: 0,
+                        duration: duration * 0.5,
+                        ease: "power1.in"
+                    }, index * (delay * 0.5));
+                } else {
+                    tl.to(element, {
+                        opacity: 0,
+                        y: 20,
+                        duration: duration * 0.5,
+                        ease: "power1.in"
+                    }, index * (delay * 0.5));
+                }
+            });
+        } else if (reverse && !shouldReverse) {
+            // Simple fade out for all elements together
+            tl.to(elementsArray, {
+                opacity: 0,
+                duration: duration * 0.5,
+                ease: "power1.in"
+            });
+        } else {
+            // Normal opening animation
+            elementsArray.forEach((element, index) => {
+                if (element.hasAttribute('data-scale')) {
+                    const scaleAxis = element.dataset.scaleAxis || 'x';
+                    const scaleProperty = `scale${scaleAxis.toUpperCase()}`;
+                    const scalePosition = element.dataset.scalePosition || 'center';
+                    
+                    tl.to(element, {
+                        [scaleProperty]: 1,
+                        transformOrigin: `${scalePosition} center`,
+                        duration: duration,
+                        opacity: 1,
+                        ease: ease
+                    }, index * delay);
+                } else {
+                    tl.to(element, {
+                        opacity: 1,
+                        x: 0,
+                        y: 0,
+                        duration: duration,
+                        ease: ease
+                    }, index * delay);
+                }
+            });
         }
 
-        gsap.set(elementsArray, initialState);
-
-        // Create and play animation
-        return gsap.to(elementsArray, {
-            opacity: 1,
-            x: 0,
-            y: 0,
-            duration: duration,
-            stagger: delay,
-            ease: ease
+        return new Promise(resolve => {
+            tl.eventCallback("onComplete", resolve);
         });
     }
 
     initClickTriggers() {
-        // Handle click events that target stagger animations
         document.addEventListener('click', (e) => {
             const clickTarget = e.target;
             if (clickTarget.hasAttribute('data-stagger-trigger')) {
