@@ -188,6 +188,9 @@
             <button data-stagger-trigger="myId">
                 Trigger Stagger Animation
             </button>
+            <button class="close-button" data-stagger-close="myId" style="position:relative; color:black;">
+                Close
+            </button>
             <h3>Cards Slide In</h3>
             <div data-stagger-reveal 
                  data-direction="x" 
@@ -195,6 +198,7 @@
                  data-distance="100"
                  data-stagger-method="end"
                  data-click-event="true"
+                 data-click-reverse="false"
                  id="myId">
                 <div class="card">Card 1</div>
                 <div class="card">Card 2</div>

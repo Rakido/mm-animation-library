@@ -328,12 +328,24 @@ class MoonMoonStagger {
     initClickTriggers() {
         document.addEventListener('click', (e) => {
             const clickTarget = e.target;
+            
+            // Handle opening
             if (clickTarget.hasAttribute('data-stagger-trigger')) {
                 const targetId = clickTarget.getAttribute('data-stagger-trigger');
                 const targetContainer = document.getElementById(targetId);
                 
                 if (targetContainer && targetContainer.hasAttribute('data-stagger-reveal')) {
                     this.playStaggerAnimation(targetContainer);
+                }
+            }
+            
+            // Handle closing
+            if (clickTarget.hasAttribute('data-stagger-close')) {
+                const targetId = clickTarget.getAttribute('data-stagger-close');
+                const targetContainer = document.getElementById(targetId);
+                
+                if (targetContainer && targetContainer.hasAttribute('data-stagger-reveal')) {
+                    this.playStaggerAnimation(targetContainer, true);
                 }
             }
         });
