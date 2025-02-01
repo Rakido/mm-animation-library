@@ -1,7 +1,10 @@
 // Moon-Moon Stagger Animation Library
 class MoonMoonStagger {
     constructor() {
-        this.init();
+        // Wait for DOM to be ready before initializing
+        document.addEventListener('DOMContentLoaded', () => {
+            this.init();
+        });
     }
 
     init() {
@@ -331,22 +334,26 @@ class MoonMoonStagger {
             
             // Handle opening
             if (clickTarget.hasAttribute('data-stagger-trigger')) {
-                const targetId = clickTarget.getAttribute('data-stagger-trigger');
-                const targetContainer = document.getElementById(targetId);
+                const targetIds = clickTarget.getAttribute('data-stagger-trigger').split(' ');
                 
-                if (targetContainer && targetContainer.hasAttribute('data-stagger-reveal')) {
-                    this.playStaggerAnimation(targetContainer);
-                }
+                targetIds.forEach(targetId => {
+                    const targetContainer = document.getElementById(targetId);
+                    if (targetContainer && targetContainer.hasAttribute('data-stagger-reveal')) {
+                        this.playStaggerAnimation(targetContainer);
+                    }
+                });
             }
             
             // Handle closing
             if (clickTarget.hasAttribute('data-stagger-close')) {
-                const targetId = clickTarget.getAttribute('data-stagger-close');
-                const targetContainer = document.getElementById(targetId);
+                const targetIds = clickTarget.getAttribute('data-stagger-close').split(' ');
                 
-                if (targetContainer && targetContainer.hasAttribute('data-stagger-reveal')) {
-                    this.playStaggerAnimation(targetContainer, true);
-                }
+                targetIds.forEach(targetId => {
+                    const targetContainer = document.getElementById(targetId);
+                    if (targetContainer && targetContainer.hasAttribute('data-stagger-reveal')) {
+                        this.playStaggerAnimation(targetContainer, true);
+                    }
+                });
             }
         });
     }

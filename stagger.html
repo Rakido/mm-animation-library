@@ -117,7 +117,7 @@
 </head>
 <body>
     <!-- Menu Button -->
-    <button class="menu-button" data-stagger-trigger="menuOverlay">
+    <button class="menu-button" data-stagger-trigger="bloc1 bloc2">
         Menu
     </button>
 
@@ -133,9 +133,7 @@
              data-click-event="true"
              data-click-reverse="false"
              data-stagger-delay="0.1"
-             data-direction="y"
-             data-distance="20"
-             id="menuOverlay">
+             id="bloc1">
             <a href="#" class="menu-link">Home</a>
             <div class="line" data-scale="0" data-scale-axis="x" data-scale-position="left"></div>
             <a href="#" class="menu-link">About</a>
@@ -143,6 +141,20 @@
             <a href="#" class="menu-link">Projects</a>
             <div class="line" data-scale="0" data-scale-axis="x" data-scale-position="left"></div>
             <a href="#" class="menu-link">Contact</a>
+        </div>
+
+        <div class="menu-links" 
+             data-stagger-reveal 
+             data-click-event="true"
+             data-click-reverse="false"
+             data-stagger-delay="0.1"
+             id="bloc2">
+            <a href="#" class="menu-link">Autre</a>
+            <div class="line" data-scale="0" data-scale-axis="x" data-scale-position="left"></div>
+            <a href="#" class="menu-link">Lien</a>
+            <div class="line" data-scale="0" data-scale-axis="x" data-scale-position="left"></div>
+            <a href="#" class="menu-link">Cool</a>
+            <div class="line" data-scale="0" data-scale-axis="x" data-scale-position="left"></div>
         </div>
     </div>
 
@@ -411,13 +423,13 @@
 
     <script>
         // Menu toggle logic
-        document.querySelector('[data-stagger-trigger="menuOverlay"]').addEventListener('click', function() {
+        document.querySelector('[data-stagger-trigger="bloc1 bloc2"]').addEventListener('click', function() {
             const overlay = document.querySelector('.menu-overlay');
             overlay.classList.add('active');
         });
 
         // Close button logic
-        document.querySelector('[data-stagger-close="menuOverlay"]').addEventListener('click', function() {
+        document.querySelector('[data-stagger-close="bloc1 bloc2"]').addEventListener('click', function() {
             const overlay = document.querySelector('.menu-overlay');
             const menuLinks = document.getElementById('menuOverlay');
             
