@@ -54,3 +54,8 @@
 [data-image-parallax] img {
   transform: scale(1.3);
 }
+
+[data-video-parallax] video {
+  will-change: transform;
+  backface-visibility: hidden;
+}

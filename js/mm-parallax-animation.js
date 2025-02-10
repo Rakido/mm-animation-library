@@ -24,6 +24,59 @@ class MoonMoonParallax {
             const pinPosition = element.dataset.parallaxPin;
             const animate = element.dataset.animate;
             const hasImageParallax = element.hasAttribute('data-image-parallax');
+            const hasVideoParallax = element.hasAttribute('data-video-parallax');
+
+            // If it's a video parallax
+            if (hasVideoParallax) {
+                const video = element.querySelector('video');
+                if (video) {
+                    const direction = element.dataset.direction || 'y';
+                    const speed = parseFloat(element.dataset.speed) || 35;
+                    const zoom = element.dataset.zoom === 'true';
+                    const zoomPercentage = parseFloat(element.dataset.zoomPercentage) || 1.15;
+
+                    const initVideoAnimation = () => {
+                        // Clear any existing transforms first
+                        gsap.set(video, {
+                            clearProps: "transform"
+                        });
+
+                        // Then set initial state
+                        gsap.set(video, {
+                            scale: 1,
+                            yPercent: -speed/2,
+                            force3D: true,
+                            transformOrigin: "center center"
+                        });
+
+                        // Create animation
+                        gsap.to(video, {
+                            yPercent: speed/2,
+                            scale: zoom ? zoomPercentage : 1,
+                            ease: "none",
+                            force3D: true,
+                            scrollTrigger: {
+                                trigger: element,
+                                start: "top bottom",
+                                end: "bottom top",
+                                scrub: 1,
+                                invalidateOnRefresh: true,
+                                onEnter: () => {
+                                    console.log('Current scale:', gsap.getProperty(video, "scale"));
+                                }
+                            }
+                        });
+                    };
+
+                    // Initialize when video is ready
+                    if (video.readyState >= 2) {
+                        initVideoAnimation();
+                    } else {
+                        video.addEventListener('loadeddata', initVideoAnimation);
+                    }
+                }
+                return;
+            }
 
             // If it's an image parallax
             if (hasImageParallax) {
