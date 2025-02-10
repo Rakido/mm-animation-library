@@ -9,35 +9,38 @@
   vertical-align: top;
 }
 
-[data-scroll-text-reveal] {
-  line-height: 1; 
-}
-
 [data-scroll-text-reveal] .split-line {
   display: block;
   overflow: hidden;
-  line-height: 1.1; 
 }
 
 [data-scroll-text-reveal] .word {
   display: inline-block;
-  line-height: 1;
-  margin-right: 0.25em; 
 }
 
 [data-scroll-text-reveal] .char {
   display: inline-block;
-  line-height: 1;
 }
 
 [data-scroll-text-reveal][data-splitting="lines"] {
+  overflow: visible;
+}
+
+[data-scroll-text-reveal][data-animate="lines-up"] div {
   overflow: hidden;
+}
+
+[data-scroll-text-reveal][data-animate="lines-up"] p {
+  display: block;
+  margin: 0;
+  transform-origin: center center;
+  will-change: transform;
 }
 
 [data-scroll-text-reveal][data-splitting="lines"] .line {
   display: block;
-  line-height: 1.1;
   position: relative;
+  overflow: visible;
 }
 
 [data-scroll-text-reveal] .whitespace {
