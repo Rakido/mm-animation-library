@@ -79,23 +79,30 @@ class MoonMoonText {
             };
 
             let textContent;
-            if (element.getAttribute('data-splitting') === 'chars') {
-                textContent = SplitType.create(element).chars;
-            } else if (element.getAttribute('data-splitting') === 'words') {
-                textContent = SplitType.create(element).words;
-            } else if (element.getAttribute('data-splitting') === 'lines') {
-                const linesResults = SplitType.create(element).lines;
+            if (element.getAttribute('data-splitting') === 'lines') {
+                // Create split type instance on either the p element inside or the element itself
+                const targetElement = element.tagName === 'P' ? element : element.querySelector('p');
+                
+                const splitResult = SplitType.create(targetElement, {
+                    types: 'lines,words,chars',
+                    tagName: 'div'
+                });
 
                 if (animationTypes.includes('lines-up')) {
-                    const wrappedLines = linesResults.map(line => {
+                    // Get all lines
+                    const lines = splitResult.lines;
+                    
+                    // Wrap each line in an overflow hidden container
+                    const wrappedLines = lines.map(line => {
                         const wrapper = document.createElement('div');
                         wrapper.style.overflow = 'hidden';
                         line.parentNode.insertBefore(wrapper, line);
                         wrapper.appendChild(line);
-                        return wrapper;
+                        return line;
                     });
 
-                    gsap.fromTo(linesResults, 
+                    // Animate each line
+                    gsap.fromTo(wrappedLines, 
                         { y: "100%" },
                         {
                             y: "0%",
@@ -110,8 +117,7 @@ class MoonMoonText {
                     );
                     return; // Exit early for lines-up animation
                 }
-
-                textContent = linesResults;
+                textContent = splitResult.lines;
             } else {
                 textContent = [element];
             }
