@@ -80,9 +80,8 @@ class MoonMoonText {
 
             let textContent;
             if (element.getAttribute('data-splitting') === 'lines') {
-                // Create split type instance on either the p element inside or the element itself
+                // Handle lines splitting
                 const targetElement = element.tagName === 'P' ? element : element.querySelector('p');
-                
                 const splitResult = SplitType.create(targetElement, {
                     types: 'lines,words,chars',
                     tagName: 'div'
@@ -118,8 +117,45 @@ class MoonMoonText {
                     return; // Exit early for lines-up animation
                 }
                 textContent = splitResult.lines;
+            } else if (element.getAttribute('data-splitting') === 'words') {
+                // Handle words splitting
+                const splitResult = SplitType.create(element, {
+                    types: 'words',
+                    tagName: 'div'
+                });
+                textContent = splitResult.words;
+            } else if (element.getAttribute('data-splitting') === 'chars') {
+                // Handle chars splitting
+                const splitResult = SplitType.create(element, {
+                    types: 'chars',
+                    tagName: 'div'
+                });
+                textContent = splitResult.chars;
             } else {
                 textContent = [element];
+            }
+
+            // Add CSS to ensure proper display
+            if (element.getAttribute('data-splitting') === 'words') {
+                textContent.forEach(word => {
+                    word.style.display = 'inline-block';
+                    if (animationTypes.includes('slide')) {
+                        const wrapper = document.createElement('div');
+                        wrapper.style.display = 'inline-block';
+                        wrapper.style.overflow = 'hidden';
+                        wrapper.style.lineHeight = '1';
+                        wrapper.style.verticalAlign = 'top';
+                        
+                        // Create inner wrapper for better height control
+                        const innerWrapper = document.createElement('div');
+                        innerWrapper.style.display = 'inline-block';
+                        innerWrapper.style.overflow = 'hidden';
+                        
+                        word.parentNode.insertBefore(wrapper, word);
+                        wrapper.appendChild(innerWrapper);
+                        innerWrapper.appendChild(word);
+                    }
+                });
             }
 
             // Apply stagger order

@@ -16,10 +16,33 @@
 
 [data-scroll-text-reveal] .word {
   display: inline-block;
+  position: relative;
 }
 
 [data-scroll-text-reveal] .char {
   display: inline-block;
+}
+
+[data-scroll-text-reveal][data-splitting="words"] .word {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+}
+
+[data-scroll-text-reveal][data-animate="slide"] .word {
+  will-change: transform;
+  line-height: inherit;
+}
+
+/* Fix wrapper heights */
+[data-scroll-text-reveal][data-splitting="words"] > div {
+  line-height: inherit;
+  vertical-align: top;
+}
+
+[data-scroll-text-reveal][data-splitting="words"] > div > div {
+  line-height: inherit;
+  vertical-align: top;
 }
 
 [data-scroll-text-reveal][data-splitting="lines"] {
@@ -62,3 +85,4 @@
   will-change: transform;
   backface-visibility: hidden;
 }
+
