@@ -90,18 +90,21 @@ class MoonMoonText {
                 if (animationTypes.includes('lines-up')) {
                     // Get all lines
                     const lines = splitResult.lines;
-                    
-                    // Wrap each line in an overflow hidden container
-                    const wrappedLines = lines.map(line => {
+                    // Wrap each line in a div
+                    lines.forEach(line => {
                         const wrapper = document.createElement('div');
                         wrapper.style.overflow = 'hidden';
+                        wrapper.style.display = 'block';
+                        wrapper.style.lineHeight = 'inherit';
+                        
+                        // Move the line into the wrapper
                         line.parentNode.insertBefore(wrapper, line);
                         wrapper.appendChild(line);
-                        return line;
                     });
+                    
 
-                    // Animate each line
-                    gsap.fromTo(wrappedLines, 
+                    // // Animate the inner divs
+                    gsap.fromTo(lines, 
                         { y: "100%" },
                         {
                             y: "0%",
