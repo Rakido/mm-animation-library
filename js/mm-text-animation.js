@@ -143,17 +143,9 @@ class MoonMoonText {
                         const wrapper = document.createElement('div');
                         wrapper.style.display = 'inline-block';
                         wrapper.style.overflow = 'hidden';
-                        wrapper.style.lineHeight = '1';
                         wrapper.style.verticalAlign = 'top';
                         
-                        // Create inner wrapper for better height control
-                        const innerWrapper = document.createElement('div');
-                        innerWrapper.style.display = 'inline-block';
-                        innerWrapper.style.overflow = 'hidden';
-                        
                         word.parentNode.insertBefore(wrapper, word);
-                        wrapper.appendChild(innerWrapper);
-                        innerWrapper.appendChild(word);
                     }
                 });
             }
