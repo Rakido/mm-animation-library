@@ -18,6 +18,10 @@
   display: inline-block;
 }
 
+[data-scroll-text-reveal] .line {
+  height: auto;
+}
+
 [data-scroll-text-reveal][data-splitting="words"] .word {
   display: inline-block;
   position: relative;
