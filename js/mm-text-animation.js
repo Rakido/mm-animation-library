@@ -80,56 +80,67 @@ class MoonMoonText {
 
             let textContent;
             if (element.getAttribute('data-splitting') === 'lines') {
-                // Handle lines splitting - now works with any text element
-                const splitResult = SplitType.create(element, {
-                    types: 'lines,words,chars',
-                    tagName: 'div'
-                });
+                // Handle lines splitting - find target elements
+                let targetElements;
+                if (element.tagName.toLowerCase() === 'div') {
+                    // If it's a div, find all p elements inside
+                    targetElements = element.querySelectorAll('p');
+                } else {
+                    // Otherwise, use the element itself
+                    targetElements = [element];
+                }
 
-                if (animationTypes.includes('lines-up')) {
-                    // Get all lines
-                    const lines = splitResult.lines;
-                    
-                    // For each line, wrap its contents in a div that will animate
-                    lines.forEach(line => {
-                        // Set styles on the line itself
-                        line.style.overflow = 'hidden';
-                        line.style.display = 'block';
-                        line.style.lineHeight = 'normal';
-                        line.style.position = 'relative';
-                        
-                        // Create inner div that will animate
-                        const innerDiv = document.createElement('div');
-                        innerDiv.style.display = 'block';
-                        innerDiv.style.position = 'relative';
-                        innerDiv.style.lineHeight = 'inherit';
-                        
-                        // Move all contents of the line into the inner div
-                        while (line.firstChild) {
-                            innerDiv.appendChild(line.firstChild);
-                        }
-                        
-                        // Add the inner div to the line
-                        line.appendChild(innerDiv);
+                // Process each target element
+                targetElements.forEach(targetElement => {
+                    const splitResult = SplitType.create(targetElement, {
+                        types: 'lines,words,chars',
+                        tagName: 'div'
                     });
 
-                    // Animate the inner divs
-                    gsap.fromTo(lines.map(line => line.firstChild), 
-                        { y: "100%" },
-                        {
-                            y: "0%",
-                            ease: easingValue,
-                            delay: delayValue,
-                            duration: durationValue,
-                            skewX: skewValue,
-                            rotate: rotateValue,
-                            stagger: staggerValue,
-                            scrollTrigger: scrollTriggerConfig
-                        }
-                    );
-                    return; // Exit early for lines-up animation
-                }
-                textContent = splitResult.lines;
+                    if (animationTypes.includes('lines-up')) {
+                        // Get all lines
+                        const lines = splitResult.lines;
+                        
+                        // For each line, wrap its contents in a div that will animate
+                        lines.forEach(line => {
+                            // Set styles on the line itself
+                            line.style.overflow = 'hidden';
+                            line.style.display = 'block';
+                            line.style.lineHeight = 'normal';
+                            line.style.position = 'relative';
+                            
+                            // Create inner div that will animate
+                            const innerDiv = document.createElement('div');
+                            innerDiv.style.display = 'block';
+                            innerDiv.style.position = 'relative';
+                            innerDiv.style.lineHeight = 'inherit';
+                            
+                            // Move all contents of the line into the inner div
+                            while (line.firstChild) {
+                                innerDiv.appendChild(line.firstChild);
+                            }
+                            
+                            // Add the inner div to the line
+                            line.appendChild(innerDiv);
+                        });
+
+                        // Animate the inner divs
+                        gsap.fromTo(lines.map(line => line.firstChild), 
+                            { y: "100%" },
+                            {
+                                y: "0%",
+                                ease: easingValue,
+                                delay: delayValue,
+                                duration: durationValue,
+                                skewX: skewValue,
+                                rotate: rotateValue,
+                                stagger: staggerValue,
+                                scrollTrigger: scrollTriggerConfig
+                            }
+                        );
+                    }
+                    textContent = splitResult.lines;
+                });
             } else if (element.getAttribute('data-splitting') === 'words') {
                 // Handle words splitting
                 const splitResult = SplitType.create(element, {
