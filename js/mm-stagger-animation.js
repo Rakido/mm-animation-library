@@ -34,6 +34,22 @@ class MoonMoonStagger {
         staggerElements.forEach(container => {
             const isClickEvent = container.dataset.clickEvent === 'true';
             
+            // Get all animation parameters from the container
+            const staggerValue = parseFloat(container.getAttribute('data-stagger-delay')) || 0.05;
+            const staggerMethod = container.getAttribute('data-stagger-method') || 'start';
+            const delayValue = parseFloat(container.getAttribute('data-delay')) || 0;
+            const durationValue = parseFloat(container.getAttribute('data-duration')) || 1;
+            const easingValue = this.parseEasing(container.getAttribute('data-easing'));
+            const hasDirection = container.hasAttribute('data-direction');
+            const direction = container.getAttribute('data-direction') || 'fade';
+            const distance = parseInt(container.getAttribute('data-distance')) || 50;
+            const rotateValue = parseFloat(container.getAttribute('data-rotate')) || 0;
+            const skewValue = parseFloat(container.getAttribute('data-skew')) || 0;
+            const opacity = parseFloat(container.dataset.opacity) || 0;
+            const scrub = container.dataset.scrub === 'true';
+            const replay = container.dataset.replay === 'true';
+            const start = container.dataset.start || 'top 80%';
+
             // Skip scroll-based animation if it's a click-only event
             if (isClickEvent) {
                 // Just set initial states
@@ -54,29 +70,7 @@ class MoonMoonStagger {
                 return;
             }
 
-            const elements = container.children;
-            const delay = parseFloat(container.dataset.staggerDelay) || 0.2;
-            const duration = parseFloat(container.dataset.duration) || 1;
-            const start = container.dataset.start || 'top 80%';
-            const ease = this.parseEasing(container.dataset.easing);
-            const hasDirection = container.hasAttribute('data-direction');
-            const direction = container.dataset.direction || 'fade';
-            const distance = parseInt(container.dataset.distance) || 50;
-            const rotate = parseInt(container.dataset.rotate) || 0;
-            
-            // Get container scale parameters
-            const containerScale = container.hasAttribute('data-scale') ? 
-                parseFloat(container.dataset.scale) : null;
-            const containerScaleAxis = container.dataset.scaleAxis || 'xy';
-            const containerScalePosition = container.dataset.scalePosition || 'center';
-            const opacity = parseFloat(container.dataset.opacity) || 0;
-            const scrub = container.dataset.scrub === 'true';
-            const staggerMethod = container.dataset.staggerMethod || 'start';
-            const initialDelay = parseFloat(container.dataset.delay) || 0;
-            const replay = container.dataset.replay === 'true';
-
-            // Get elements array based on stagger method
-            let elementsArray = Array.from(elements);
+            let elementsArray = Array.from(container.children);
             switch(staggerMethod) {
                 case 'end':
                     elementsArray = elementsArray.reverse();
@@ -92,7 +86,7 @@ class MoonMoonStagger {
                     break;
             }
 
-            // Create timeline for coordinated animation
+            // Create timeline
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: container,
@@ -100,19 +94,21 @@ class MoonMoonStagger {
                     end: scrub ? 'bottom top' : undefined,
                     scrub: scrub,
                     toggleActions: replay ? 
-                        "play reverse play reverse" : // For replay
-                        "play none none none", // Default behavior
-                    once: !replay // Only play once if no replay
+                        "play reverse play reverse" : 
+                        "play none none none",
+                    once: !replay
                 }
             });
 
-            // Set initial states for all elements
-            elementsArray.forEach(element => {
+            // Set initial states and animate elements
+            elementsArray.forEach((element, index) => {
                 const initialState = {
-                    opacity: opacity
+                    opacity: opacity,
+                    rotation: rotateValue,
+                    skewX: skewValue,
+                    transformOrigin: "center center"
                 };
 
-                // Handle direction
                 if (hasDirection) {
                     switch(direction) {
                         case 'x': initialState.x = -distance; break;
@@ -153,7 +149,11 @@ class MoonMoonStagger {
                     }
                 }
                 // If no element scale, use container scale if available
-                else if (containerScale !== null) {
+                else if (container.hasAttribute('data-scale')) {
+                    const containerScale = parseFloat(container.dataset.scale);
+                    const containerScaleAxis = container.dataset.scaleAxis || 'xy';
+                    const containerScalePosition = container.dataset.scalePosition || 'center';
+
                     initialState.transformOrigin = (() => {
                         switch(containerScalePosition) {
                             case 'left': return 'left center';
@@ -177,36 +177,40 @@ class MoonMoonStagger {
                 }
 
                 gsap.set(element, initialState);
-            });
 
-            // Animate each element
-            elementsArray.forEach((element, index) => {
                 const finalState = {
                     opacity: 1,
                     x: 0,
                     y: 0,
-                    duration: duration,
-                    ease: ease,
-                    delay: index * delay + initialDelay
+                    rotation: 0,
+                    skewX: 0,
+                    duration: durationValue,
+                    ease: easingValue,
+                    delay: index * staggerValue + delayValue,
+                    transformOrigin: "center center"
                 };
 
                 // Handle scale animation
-                const hasElementScale = element.hasAttribute('data-scale');
                 if (hasElementScale) {
                     const elementScaleAxis = element.dataset.scaleAxis || 'xy';
+                    const scaleValue = parseFloat(element.dataset.scale) || 0;
+                    
                     switch(elementScaleAxis) {
                         case 'x':
+                            initialState.scaleX = scaleValue;
                             finalState.scaleX = 1;
                             break;
                         case 'y':
+                            initialState.scaleY = scaleValue;
                             finalState.scaleY = 1;
                             break;
                         default:
+                            initialState.scale = scaleValue;
                             finalState.scale = 1;
                     }
                 }
-                else if (containerScale !== null) {
-                    switch(containerScaleAxis) {
+                else if (container.hasAttribute('data-scale')) {
+                    switch(container.dataset.scaleAxis) {
                         case 'x':
                             finalState.scaleX = 1;
                             break;

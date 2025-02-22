@@ -124,7 +124,7 @@
     <!-- Menu Overlay -->
     <div class="menu-overlay">
         <!-- Close Button -->
-        <button class="close-button" data-stagger-close="menuOverlay">
+        <button class="close-button" data-stagger-close="bloc1 bloc2">
             ✕
         </button>
 
@@ -253,7 +253,8 @@
                  data-stagger-reveal 
                  data-direction="-x" 
                  data-distance="100" 
-                 data-stagger-delay="0.1">
+                 data-stagger-delay="0.1"
+                 data-rotate="45">
                 <div class="item"></div>
                 <div class="item"></div>
                 <div class="item"></div>
@@ -272,10 +273,12 @@
                  data-scale="0.3" 
                  data-stagger-delay="0.2" 
                  data-duration="1.5" 
-                 data-easing="0.7,0,0.3,1">
-                <div class="circle"></div>
-                <div class="circle"></div>
-                <div class="circle"></div>
+                 data-easing="0.625,0.05,0,1"
+                 class="grid">
+                 <div class="item"></div>
+                 <div class="item"></div>
+                 <div class="item"></div>
+                 <div class="item"></div>
             </div>
         </div>
 
@@ -429,12 +432,16 @@
         });
 
         // Close button logic
-        document.querySelector('[data-stagger-close="bloc1 bloc2"]').addEventListener('click', function() {
+        document.querySelector('.close-button').addEventListener('click', function() {
             const overlay = document.querySelector('.menu-overlay');
-            const menuLinks = document.getElementById('menuOverlay');
+            const bloc1 = document.getElementById('bloc1');
+            const bloc2 = document.getElementById('bloc2');
             
-            // Trigger reverse animation and then hide overlay
-            window.moonMoonStagger.playStaggerAnimation(menuLinks, true).then(() => {
+            // Trigger reverse animation for both blocs
+            Promise.all([
+                window.moonMoonStagger.playStaggerAnimation(bloc1, true),
+                window.moonMoonStagger.playStaggerAnimation(bloc2, true)
+            ]).then(() => {
                 overlay.classList.remove('active');
             });
         });
