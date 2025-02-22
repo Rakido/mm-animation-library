@@ -80,9 +80,8 @@ class MoonMoonText {
 
             let textContent;
             if (element.getAttribute('data-splitting') === 'lines') {
-                // Handle lines splitting
-                const targetElement = element.tagName === 'P' ? element : element.querySelector('p');
-                const splitResult = SplitType.create(targetElement, {
+                // Handle lines splitting - now works with any text element
+                const splitResult = SplitType.create(element, {
                     types: 'lines,words,chars',
                     tagName: 'div'
                 });
@@ -90,21 +89,32 @@ class MoonMoonText {
                 if (animationTypes.includes('lines-up')) {
                     // Get all lines
                     const lines = splitResult.lines;
-                    // Wrap each line in a div
-                    lines.forEach(line => {
-                        const wrapper = document.createElement('div');
-                        wrapper.style.overflow = 'hidden';
-                        wrapper.style.display = 'block';
-                        wrapper.style.lineHeight = 'inherit';
-                        
-                        // Move the line into the wrapper
-                        line.parentNode.insertBefore(wrapper, line);
-                        wrapper.appendChild(line);
-                    });
                     
+                    // For each line, wrap its contents in a div that will animate
+                    lines.forEach(line => {
+                        // Set styles on the line itself
+                        line.style.overflow = 'hidden';
+                        line.style.display = 'block';
+                        line.style.lineHeight = 'normal';
+                        line.style.position = 'relative';
+                        
+                        // Create inner div that will animate
+                        const innerDiv = document.createElement('div');
+                        innerDiv.style.display = 'block';
+                        innerDiv.style.position = 'relative';
+                        innerDiv.style.lineHeight = 'inherit';
+                        
+                        // Move all contents of the line into the inner div
+                        while (line.firstChild) {
+                            innerDiv.appendChild(line.firstChild);
+                        }
+                        
+                        // Add the inner div to the line
+                        line.appendChild(innerDiv);
+                    });
 
-                    // // Animate the inner divs
-                    gsap.fromTo(lines, 
+                    // Animate the inner divs
+                    gsap.fromTo(lines.map(line => line.firstChild), 
                         { y: "100%" },
                         {
                             y: "0%",
