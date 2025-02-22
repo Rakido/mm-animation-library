@@ -33,6 +33,19 @@
   line-height: inherit;
 }
 
+[data-scroll-text-reveal] .split-line {
+  line-height: inherit !important;
+  display: block !important;
+  position: relative;
+}
+
+[data-scroll-text-reveal] .split-line > div {
+  display: block;
+  position: relative;
+  line-height: inherit;
+}
+
+
 /* Fix wrapper heights */
 [data-scroll-text-reveal][data-splitting="words"] > div {
   line-height: inherit;
@@ -75,18 +88,7 @@
 
 [data-video-parallax] video {
   will-change: transform;
-  backface-visibility: hidden;
+  transform-origin: center center;
 }
 
-[data-scroll-text-reveal] .split-line {
-    line-height: inherit !important;
-    display: block !important;
-    position: relative;
-}
-
-[data-scroll-text-reveal] .split-line > div {
-    display: block;
-    position: relative;
-    line-height: inherit;
-}
 

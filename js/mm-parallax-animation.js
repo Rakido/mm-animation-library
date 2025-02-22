@@ -32,27 +32,20 @@ class MoonMoonParallax {
                 if (video) {
                     const direction = element.dataset.direction || 'y';
                     const speed = parseFloat(element.dataset.speed) || 35;
-                    const zoom = element.dataset.zoom === 'true';
-                    const zoomPercentage = parseFloat(element.dataset.zoomPercentage) || 1.15;
+                    const zoomPercentage = parseFloat(element.dataset.zoomPercentage) || 1.3;
 
                     const initVideoAnimation = () => {
-                        // Clear any existing transforms first
+                        // Set initial state with scale
                         gsap.set(video, {
-                            clearProps: "transform"
-                        });
-
-                        // Then set initial state
-                        gsap.set(video, {
-                            scale: 1,
+                            scale: zoomPercentage,
                             yPercent: -speed/2,
                             force3D: true,
                             transformOrigin: "center center"
                         });
 
-                        // Create animation
+                        // Create animation for movement only
                         gsap.to(video, {
                             yPercent: speed/2,
-                            scale: zoom ? zoomPercentage : 1,
                             ease: "none",
                             force3D: true,
                             scrollTrigger: {
@@ -60,10 +53,7 @@ class MoonMoonParallax {
                                 start: "top bottom",
                                 end: "bottom top",
                                 scrub: 1,
-                                invalidateOnRefresh: true,
-                                onEnter: () => {
-                                    console.log('Current scale:', gsap.getProperty(video, "scale"));
-                                }
+                                invalidateOnRefresh: true
                             }
                         });
                     };
@@ -89,37 +79,25 @@ class MoonMoonParallax {
                     const hasZoom = element.getAttribute('data-zoom') === 'true';
                     const zoomPercentage = parseFloat(element.dataset.zoomPercentage) || 1.5;
 
-                    // Set initial position based on direction
-                    const initialPosition = {
-                        'x': { xPercent: -speed/2 },
-                        '-x': { xPercent: speed/2 },
-                        'y': { yPercent: -speed/2 },
-                        '-y': { yPercent: speed/2 }
-                    }[direction] || { yPercent: -speed/2 };
+                    // Set initial position and scale
+                    const initialState = {
+                        scale: hasZoom ? 1 : undefined,
+                        transformOrigin: 'center center'
+                    };
 
-                    // Set final position
-                    const finalPosition = {
-                        'x': { xPercent: speed/2 },
-                        '-x': { xPercent: -speed/2 },
-                        'y': { yPercent: speed/2 },
-                        '-y': { yPercent: -speed/2 }
-                    }[direction] || { yPercent: speed/2 };
-
-                    // Add zoom if enabled
-                    if (hasZoom) {
-                        initialPosition.scale = 1;
-                        finalPosition.scale = zoomPercentage;
+                    // Add direction-based initial position
+                    switch(direction) {
+                        case 'x': initialState.xPercent = -speed/2; break;
+                        case '-x': initialState.xPercent = speed/2; break;
+                        case 'y': initialState.yPercent = -speed/2; break;
+                        case '-y': initialState.yPercent = speed/2; break;
                     }
 
-                    // Set initial position
-                    gsap.set(image, {
-                        ...initialPosition,
-                        transformOrigin: 'center center'
-                    });
+                    // Set initial state
+                    gsap.set(image, initialState);
 
-                    // Create the animation
-                    gsap.to(image, {
-                        ...finalPosition,
+                    // Create final state
+                    const finalState = {
                         ease: "none",
                         scrollTrigger: {
                             trigger: element,
@@ -128,7 +106,23 @@ class MoonMoonParallax {
                             scrub: scrub,
                             invalidateOnRefresh: true
                         }
-                    });
+                    };
+
+                    // Add direction-based final position
+                    switch(direction) {
+                        case 'x': finalState.xPercent = speed/2; break;
+                        case '-x': finalState.xPercent = -speed/2; break;
+                        case 'y': finalState.yPercent = speed/2; break;
+                        case '-y': finalState.yPercent = -speed/2; break;
+                    }
+
+                    // Add zoom if enabled
+                    if (hasZoom) {
+                        finalState.scale = zoomPercentage;
+                    }
+
+                    // Create the animation
+                    gsap.to(image, finalState);
                 }
                 return;
             }
