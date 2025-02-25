@@ -45,6 +45,18 @@
   line-height: inherit;
 }
 
+[data-scroll-text-reveal][data-animate="scale"] .char,
+[data-scroll-text-reveal][data-animate="scale"] .word {
+    display: inline-block;
+    transform-origin: center center;
+}
+
+[data-scroll-text-reveal][data-animate="scale"] .line {
+    display: block;
+    transform-origin: center center;
+}
+
+
 
 /* Fix wrapper heights */
 [data-scroll-text-reveal][data-splitting="words"] > div {
@@ -90,5 +102,4 @@
   will-change: transform;
   transform-origin: center center;
 }
-
 
