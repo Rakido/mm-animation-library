@@ -301,6 +301,28 @@ class MoonMoonText {
                         }
                         break;
 
+                    case "scale":
+                        // Set transform origin on elements
+                        textContent.forEach(item => {
+                            item.style.transformOrigin = 'center center';
+                            // For lines, ensure proper scaling
+                            if (element.getAttribute('data-splitting') === 'lines') {
+                                item.style.display = 'block';
+                            } else {
+                                item.style.display = 'inline-block';
+                            }
+                        });
+
+                        animation = {
+                            scale: 0,
+                            duration: durationValue,
+                            ease: easingValue,
+                            stagger: staggerValue,
+                            delay: delayValue,
+                            transformOrigin: "center center"
+                        };
+                        break;
+
                     default:
                         animation = {
                             opacity: 0,
