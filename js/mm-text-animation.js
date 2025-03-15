@@ -65,20 +65,21 @@ class MoonMoonText {
             const revert = element.hasAttribute('data-revert') ? 
                 element.dataset.revert === 'true' : true; // Default to true if not specified
 
-            // Update ScrollTrigger configuration
+            // Create ScrollTrigger configuration first
             const scrollTriggerConfig = {
                 trigger: element,
                 start: startTrigger,
                 end: endTrigger,
                 scrub: scrub,
-                // Change toggleActions based on revert parameter
                 toggleActions: revert ? 
-                    "play reverse play reverse" : // If revert is true, play in both directions
-                    "play none none none", // If revert is false, play once and stay
-                once: !revert // Only play once if revert is false
+                    "play reverse play reverse" : 
+                    "play none none none",
+                once: !revert
             };
 
+            // Process the element to get textContent
             let textContent;
+            
             if (element.getAttribute('data-splitting') === 'lines') {
                 // Handle lines splitting - find target elements
                 let targetElements;
@@ -124,8 +125,25 @@ class MoonMoonText {
                             line.appendChild(innerDiv);
                         });
 
-                        // Animate the inner divs
-                        gsap.fromTo(lines.map(line => line.firstChild), 
+                        // Create a new timeline for this animation
+                        const tl = gsap.timeline({
+                            scrollTrigger: {
+                                ...scrollTriggerConfig,
+                                onEnter: function() {
+                                    if (!scrub) {
+                                        tl.restart(true, false);
+                                    }
+                                },
+                                onEnterBack: function() {
+                                    if (!scrub && revert) {
+                                        tl.restart(true, false);
+                                    }
+                                }
+                            }
+                        });
+
+                        // Add the animation to the timeline
+                        tl.fromTo(lines.map(line => line.firstChild), 
                             { y: "100%" },
                             {
                                 y: "0%",
@@ -134,8 +152,7 @@ class MoonMoonText {
                                 duration: durationValue,
                                 skewX: skewValue,
                                 rotate: rotateValue,
-                                stagger: staggerValue,
-                                scrollTrigger: scrollTriggerConfig
+                                stagger: staggerValue
                             }
                         );
                     }
@@ -157,6 +174,11 @@ class MoonMoonText {
                 textContent = splitResult.chars;
             } else {
                 textContent = [element];
+            }
+
+            // Skip the rest of the animation setup if we've already handled lines-up
+            if (animationTypes.includes('lines-up') && element.getAttribute('data-splitting') === 'lines') {
+                return;
             }
 
             // Add CSS to ensure proper display
@@ -357,17 +379,32 @@ class MoonMoonText {
             // Combine and apply animations
             const combinedAnimation = Object.assign({}, ...animations);
 
+            // Create a new timeline for this animation
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    ...scrollTriggerConfig,
+                    onEnter: function() {
+                        if (!scrub) {
+                            tl.restart(true, false);
+                        }
+                    },
+                    onEnterBack: function() {
+                        if (!scrub && revert) {
+                            tl.restart(true, false);
+                        }
+                    }
+                }
+            });
+
             if (animationTypes.includes('shutter-word')) {
-                gsap.to(textContent.map(word => word.lastChild), {
+                tl.to(textContent.map(word => word.lastChild), {
                     ...combinedAnimation,
-                    ease: easingValue,
-                    scrollTrigger: scrollTriggerConfig
+                    ease: easingValue
                 });
             } else {
-                gsap.from(textContent, {
+                tl.from(textContent, {
                     ...combinedAnimation,
-                    ease: easingValue,
-                    scrollTrigger: scrollTriggerConfig
+                    ease: easingValue
                 });
             }
         });
