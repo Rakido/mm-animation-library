@@ -247,9 +247,20 @@ class MoonMoonStagger {
         if (!reverse) {
             elementsArray.forEach(element => {
                 if (element.classList.contains('line')) {
-                    // Force scaleX to 0 for lines
+                    const scalePosition = element.dataset.scalePosition || 'center';
+                    const transformOrigin = (() => {
+                        switch(scalePosition) {
+                            case 'left': return 'left center';
+                            case 'right': return 'right center';
+                            case 'top': return 'center top';
+                            case 'bottom': return 'center bottom';
+                            default: return 'center center';
+                        }
+                    })();
+
+                    // Set initial state with proper transform origin
                     gsap.set(element, {
-                        transformOrigin: element.dataset.scalePosition === 'left' ? 'left center' : 'center center',
+                        transformOrigin: transformOrigin,
                         scaleX: 0,
                         immediateRender: true
                     });
@@ -269,17 +280,26 @@ class MoonMoonStagger {
         }
 
         if (reverse && shouldReverse) {
-            // Reverse array for closing with stagger
             elementsArray = elementsArray.reverse();
             
-            // Animate elements in sequence
             elementsArray.forEach((element, index) => {
                 if (element.hasAttribute('data-scale')) {
                     const scaleAxis = element.dataset.scaleAxis || 'x';
                     const scaleProperty = `scale${scaleAxis.toUpperCase()}`;
+                    const scalePosition = element.dataset.scalePosition || 'center';
+                    const transformOrigin = (() => {
+                        switch(scalePosition) {
+                            case 'left': return 'left center';
+                            case 'right': return 'right center';
+                            case 'top': return 'center top';
+                            case 'bottom': return 'center bottom';
+                            default: return 'center center';
+                        }
+                    })();
                     
                     tl.to(element, {
                         [scaleProperty]: 0,
+                        transformOrigin: transformOrigin,
                         duration: duration * 0.5,
                         ease: "power1.in"
                     }, index * (delay * 0.5));
@@ -293,7 +313,6 @@ class MoonMoonStagger {
                 }
             });
         } else if (reverse && !shouldReverse) {
-            // Simple fade out for all elements together
             tl.to(elementsArray, {
                 opacity: 0,
                 duration: duration * 0.5,
@@ -306,10 +325,19 @@ class MoonMoonStagger {
                     const scaleAxis = element.dataset.scaleAxis || 'x';
                     const scaleProperty = `scale${scaleAxis.toUpperCase()}`;
                     const scalePosition = element.dataset.scalePosition || 'center';
+                    const transformOrigin = (() => {
+                        switch(scalePosition) {
+                            case 'left': return 'left center';
+                            case 'right': return 'right center';
+                            case 'top': return 'center top';
+                            case 'bottom': return 'center bottom';
+                            default: return 'center center';
+                        }
+                    })();
                     
                     tl.to(element, {
                         [scaleProperty]: 1,
-                        transformOrigin: `${scalePosition} center`,
+                        transformOrigin: transformOrigin,
                         duration: duration,
                         opacity: 1,
                         ease: ease
