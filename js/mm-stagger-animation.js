@@ -8,7 +8,6 @@ class MoonMoonStagger {
     }
 
     init() {
-        gsap.registerPlugin(ScrollTrigger, CustomEase);
         this.initStaggerAnimation();
         this.initClickTriggers();
     }

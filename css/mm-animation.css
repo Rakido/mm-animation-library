@@ -103,3 +103,25 @@
   transform-origin: center center;
 }
 
+[data-scroll-text-reveal][data-hover="true"] {
+    position: relative;
+    cursor: pointer;
+}
+
+[data-scroll-text-reveal][data-hover="true"] > div {
+    overflow: hidden;
+}
+
+[data-scroll-text-reveal][data-hover="true"] .char,
+[data-scroll-text-reveal][data-hover="true"] .word,
+[data-scroll-text-reveal][data-hover="true"] .line {
+    will-change: transform;
+    display: inline-block;
+    overflow: hidden;
+}
+
+[data-scroll-text-reveal][data-hover="true"] .char {
+    transform-origin: center center;
+    position: relative;
+}
+

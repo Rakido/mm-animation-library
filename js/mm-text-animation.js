@@ -407,7 +407,110 @@ class MoonMoonText {
                     ease: easingValue
                 });
             }
+
+            if (element.getAttribute('data-hover') === 'true') {
+                // Create hover animation instead of scroll animation
+                this.createHoverAnimation(element, textContent, animationTypes[0], {
+                    duration: durationValue,
+                    ease: easingValue,
+                    stagger: staggerValue
+                });
+                return; // Skip regular scroll animation
+            }
         });
+    }
+
+    // Add this helper function at the class level
+    createHoverAnimation(element, textContent, animationType, animationConfig) {
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+        wrapper.style.overflow = 'hidden';
+        
+        // Clone the text elements and split them
+        const staticText = element.cloneNode(true);
+        const hoverText = element.cloneNode(true);
+        
+        // Split both texts
+        const splitType = element.getAttribute('data-splitting') || 'chars';
+        const staticSplit = SplitType.create(staticText, { types: splitType });
+        const hoverSplit = SplitType.create(hoverText, { types: splitType });
+        
+        // Style the wrapper
+        wrapper.style.width = 'fit-content';
+        
+        // Style both text layers
+        staticText.style.position = 'relative';
+        hoverText.style.position = 'absolute';
+        hoverText.style.top = '0';
+        hoverText.style.left = '0';
+        hoverText.style.width = '100%';
+        
+        // Add to wrapper
+        wrapper.appendChild(staticText);
+        wrapper.appendChild(hoverText);
+        
+        // Replace original element with wrapper
+        element.parentNode.replaceChild(wrapper, element);
+
+        // Get the elements to animate based on splitting type
+        const getElements = (container, type) => {
+            switch(type) {
+                case 'chars':
+                    return container.querySelectorAll('.char');
+                case 'words':
+                    return container.querySelectorAll('.word');
+                case 'lines':
+                    return container.querySelectorAll('.line');
+                default:
+                    return container.querySelectorAll('.char');
+            }
+        };
+
+        const staticElements = getElements(staticText, splitType);
+        const hoverElements = getElements(hoverText, splitType);
+
+        // Set initial states
+        if (animationType === 'slide') {
+            // Make static text fully visible initially
+            gsap.set(staticElements, {
+                yPercent: 0
+            });
+            
+            // Set hover text initially hidden below
+            gsap.set(hoverElements, {
+                yPercent: 100
+            });
+
+            // Ensure both layers are visible
+            gsap.set([staticElements, hoverElements], {
+                opacity: 1
+            });
+        }
+
+        // Create hover timeline
+        const hoverTl = gsap.timeline({ paused: true });
+
+        if (animationType === 'slide') {
+            hoverTl
+                .to(staticElements, {
+                    yPercent: 100, // Move original text down
+                    duration: animationConfig.duration || 0.5,
+                    ease: animationConfig.ease || "power2.out",
+                    stagger: animationConfig.stagger || 0.02
+                })
+                .to(hoverElements, {
+                    yPercent: 0, // Move hover text to original position
+                    duration: animationConfig.duration || 0.5,
+                    ease: animationConfig.ease || "power2.out",
+                    stagger: animationConfig.stagger || 0.02
+                }, "<"); // Start at same time as previous animation
+        }
+
+        // Add hover events
+        wrapper.addEventListener('mouseenter', () => hoverTl.play());
+        wrapper.addEventListener('mouseleave', () => hoverTl.reverse());
     }
 }
 

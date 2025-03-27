@@ -4,10 +4,7 @@ class MoonMoonParallax {
         this.init();
     }
 
-    init() {
-        // Register ScrollTrigger plugin
-        gsap.registerPlugin(ScrollTrigger);
-        
+    init() {        
         // Initialize parallax elements
         this.initParallax();
     }
@@ -40,10 +37,11 @@ class MoonMoonParallax {
                             scale: zoomPercentage,
                             yPercent: -speed/2,
                             force3D: true,
-                            transformOrigin: "center center"
+                            transformOrigin: "center center",
+                            backfaceVisibility: "hidden"
                         });
 
-                        // Create animation for movement only
+                        // Create a smoother animation
                         gsap.to(video, {
                             yPercent: speed/2,
                             ease: "none",
@@ -51,9 +49,54 @@ class MoonMoonParallax {
                             scrollTrigger: {
                                 trigger: element,
                                 start: "top bottom",
-                                end: "bottom top",
-                                scrub: 1,
-                                invalidateOnRefresh: true
+                                end: "bottom+=20% top",
+                                scrub: 2,
+                                invalidateOnRefresh: true,
+                                fastScrollEnd: true,
+                                preventOverlaps: true,
+                                anticipatePin: 1,
+                                onUpdate: (self) => {
+                                    if (self.progress <= 0.01) {
+                                        gsap.set(video, { yPercent: -speed/2 });
+                                    } else if (self.progress >= 0.99) {
+                                        gsap.set(video, { yPercent: speed/2 });
+                                    }
+                                },
+                                onLeave: (self) => {
+                                    gsap.to(video, {
+                                        yPercent: speed/2,
+                                        duration: 0.1,
+                                        overwrite: true
+                                    });
+                                },
+                                onLeaveBack: (self) => {
+                                    gsap.to(video, {
+                                        yPercent: -speed/2,
+                                        duration: 0.1,
+                                        overwrite: true
+                                    });
+                                }
+                            }
+                        });
+
+                        // Separate ScrollTrigger for performance optimization
+                        ScrollTrigger.create({
+                            trigger: element,
+                            start: "top bottom",
+                            end: "bottom+=20% top",
+                            onEnter: () => {
+                                video.style.willChange = 'transform';
+                            },
+                            onLeave: () => {
+                                video.style.willChange = 'auto';
+                                gsap.set(video, { yPercent: speed/2 });
+                            },
+                            onEnterBack: () => {
+                                video.style.willChange = 'transform';
+                            },
+                            onLeaveBack: () => {
+                                video.style.willChange = 'auto';
+                                gsap.set(video, { yPercent: -speed/2 });
                             }
                         });
                     };

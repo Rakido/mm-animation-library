@@ -5,7 +5,6 @@ class MoonMoonSVG {
     }
 
     init() {
-        gsap.registerPlugin(ScrollTrigger, CustomEase);
         this.initSVGAnimation();
     }
 

@@ -17,3 +17,5 @@ function raf(time) {
 }
 
 requestAnimationFrame(raf);
+
+gsap.registerPlugin(ScrollTrigger, CustomEase);

@@ -5,9 +5,6 @@ class MoonMoonImageReveal {
     }
 
     init() {
-        // Register GSAP plugins
-        gsap.registerPlugin(ScrollTrigger, CustomEase);
-
         // Initialize reveals
         this.initImageReveal();
     }
