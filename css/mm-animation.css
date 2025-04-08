@@ -130,7 +130,7 @@
 }
 
 [data-parallax-color] {
-  transition: background-color 0.1s linear;
+  transition: background 1s ease-in-out;
 }
 
 
