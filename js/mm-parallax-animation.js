@@ -4,15 +4,25 @@ class MoonMoonParallax {
         this.init();
     }
 
-    init() {        
+    init() {
+        // Register necessary plugins
+        gsap.registerPlugin(ScrollTrigger);
+        
         // Initialize parallax elements
         this.initParallax();
+        // Initialize color transitions
+        this.initColorTransitions();
     }
 
     initParallax() {
         const parallaxElements = document.querySelectorAll('[data-parallax]');
 
         parallaxElements.forEach(element => {
+            // Skip transform animations if element has data-parallax-color
+            if (element.hasAttribute('data-parallax-color')) {
+                return;
+            }
+
             // Get animation parameters
             const direction = element.dataset.parallaxDirection || 'y';
             const speed = parseFloat(element.dataset.speed) || 0.5;
@@ -397,6 +407,57 @@ class MoonMoonParallax {
                 });
             }
         });
+    }
+
+    initColorTransitions() {
+        const colorSections = document.querySelectorAll('[data-parallax][data-parallax-color]');
+        
+        // Create pairs of sections for color transitions
+        for (let i = 0; i < colorSections.length - 1; i++) {
+            const currentSection = colorSections[i];
+            const nextSection = colorSections[i + 1];
+            
+            // Get colors
+            const fromColor = currentSection.dataset.parallaxColor;
+            const toColor = nextSection.dataset.parallaxColor;
+            
+            // Set initial background color for the first section
+            currentSection.style.backgroundColor = fromColor;
+            
+            // Create the color transition
+            gsap.to(currentSection, {
+                backgroundColor: toColor,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: nextSection,
+                    start: "top bottom",
+                    end: "top center",
+                    scrub: true,
+                    invalidateOnRefresh: true,
+                    onEnter: () => {
+                        currentSection.style.willChange = 'background-color';
+                    },
+                    onLeave: () => {
+                        currentSection.style.willChange = 'auto';
+                    },
+                    onEnterBack: () => {
+                        currentSection.style.willChange = 'background-color';
+                    },
+                    onLeaveBack: () => {
+                        currentSection.style.willChange = 'auto';
+                    }
+                }
+            });
+
+            // Set initial background color for the next section
+            nextSection.style.backgroundColor = toColor;
+        }
+
+        // Set the last section's color
+        if (colorSections.length > 0) {
+            const lastSection = colorSections[colorSections.length - 1];
+            lastSection.style.backgroundColor = lastSection.dataset.parallaxColor;
+        }
     }
 
     // Utility method to handle window resize

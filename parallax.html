@@ -95,9 +95,24 @@
             transform: translate3d(0, 0, 0);
     will-change: transform;
         }
+        [data-parallax-color] {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        }
     </style>
 </head>
 <body>
+    <!-- Add these sections at the beginning of the body -->
+    <section data-parallax data-parallax-color="#00FFFF">
+        <h1>First Section</h1>
+    </section>
+
+    <section data-parallax data-parallax-color="#FF0000">
+        <h1>Second Section</h1>
+    </section>
     <section>
         <div class="mm-media-wrapper " data-parallax="" data-video-parallax  
         data-direction="y" style="will-change: auto;">
