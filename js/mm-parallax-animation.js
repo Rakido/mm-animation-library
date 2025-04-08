@@ -4,15 +4,25 @@ class MoonMoonParallax {
         this.init();
     }
 
-    init() {        
+    init() {
+        // Register necessary plugins
+        gsap.registerPlugin(ScrollTrigger);
+        
         // Initialize parallax elements
         this.initParallax();
+        // Initialize color transitions
+        this.initColorTransitions();
     }
 
     initParallax() {
         const parallaxElements = document.querySelectorAll('[data-parallax]');
 
         parallaxElements.forEach(element => {
+            // Skip transform animations if element has data-parallax-color
+            if (element.hasAttribute('data-parallax-color')) {
+                return;
+            }
+
             // Get animation parameters
             const direction = element.dataset.parallaxDirection || 'y';
             const speed = parseFloat(element.dataset.speed) || 0.5;
@@ -396,6 +406,44 @@ class MoonMoonParallax {
                     gsap.to(element.getAnimations(), { timeScale: 1, duration: 0.5 });
                 });
             }
+        });
+    }
+
+    initColorTransitions() {
+        const colorSections = document.querySelectorAll('[data-parallax][data-parallax-color]');
+        if (!colorSections.length) return;
+
+        // Set initial color on body
+        document.body.style.backgroundColor = colorSections[0].dataset.parallaxColor;
+
+        // Create a single ScrollTrigger for handling all color transitions
+        ScrollTrigger.create({
+            trigger: document.body,
+            start: 'top top',
+            end: 'bottom bottom',
+            onUpdate: (self) => {
+                // Find the current section based on viewport position
+                const currentSection = Array.from(colorSections).find(section => {
+                    const rect = section.getBoundingClientRect();
+                    // Check if section's bottom is below viewport center
+                    return rect.bottom >= (window.innerHeight * 0.5);
+                });
+
+                if (currentSection) {
+                    // Create smooth color transition
+                    gsap.to(document.body, {
+                        backgroundColor: currentSection.dataset.parallaxColor,
+                        duration: 0.5,
+                        overwrite: true,
+                        ease: "power1.out"
+                    });
+                }
+            }
+        });
+
+        // Remove background colors from sections since we're using body background
+        colorSections.forEach(section => {
+            section.style.backgroundColor = 'transparent';
         });
     }
 
