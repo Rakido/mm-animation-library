@@ -97,12 +97,14 @@
     will-change: transform;
         }
         [data-parallax-color] {
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        background: transparent !important;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: background-color 0.1s linear;
+            position: relative;
+            z-index: 1; /* Ensure proper stacking */
         }
     </style>
 </head>

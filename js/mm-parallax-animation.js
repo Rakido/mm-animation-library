@@ -416,32 +416,49 @@ class MoonMoonParallax {
         // Set initial color on body
         document.body.style.backgroundColor = colorSections[0].dataset.parallaxColor;
 
-        // Create a single ScrollTrigger for handling all color transitions
-        ScrollTrigger.create({
-            trigger: document.body,
-            start: 'top top',
-            end: 'bottom bottom',
-            onUpdate: (self) => {
-                // Find the current section based on viewport position
-                const currentSection = Array.from(colorSections).find(section => {
-                    const rect = section.getBoundingClientRect();
-                    // Check if section's bottom is below viewport center
-                    return rect.bottom >= (window.innerHeight * 0.5);
-                });
-
-                if (currentSection) {
-                    // Create smooth color transition
-                    gsap.to(document.body, {
-                        backgroundColor: currentSection.dataset.parallaxColor,
-                        duration: 0.5,
-                        overwrite: true,
-                        ease: "power1.out"
+        // Create a timeline for smooth color transitions
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: document.body,
+                start: 'top top',
+                end: 'bottom bottom',
+                onUpdate: (self) => {
+                    // Find the current section based on viewport position
+                    const currentSectionIndex = Array.from(colorSections).findIndex(section => {
+                        const rect = section.getBoundingClientRect();
+                        return rect.bottom >= (window.innerHeight * 0.5);
                     });
+
+                    if (currentSectionIndex !== -1) {
+                        const currentSection = colorSections[currentSectionIndex];
+                        const currentColor = currentSection.dataset.parallaxColor;
+
+                        // Transition to current section color
+                        gsap.to(document.body, {
+                            backgroundColor: currentColor,
+                            duration: 0.5,
+                            overwrite: true,
+                            ease: "power1.out"
+                        });
+                    } else {
+                        // If we're past all color sections, transition back to white
+                        const lastSection = colorSections[colorSections.length - 1];
+                        const lastRect = lastSection.getBoundingClientRect();
+                        
+                        if (lastRect.bottom < window.innerHeight * 0.5) {
+                            gsap.to(document.body, {
+                                backgroundColor: "#ffffff",
+                                duration: 0.5,
+                                overwrite: true,
+                                ease: "power1.out"
+                            });
+                        }
+                    }
                 }
             }
         });
 
-        // Remove background colors from sections since we're using body background
+        // Make sure sections are transparent to show body color
         colorSections.forEach(section => {
             section.style.backgroundColor = 'transparent';
         });
