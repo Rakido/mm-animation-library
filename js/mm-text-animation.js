@@ -63,7 +63,7 @@ class MoonMoonText {
             const startTrigger = element.dataset.start || "top bottom-=10%";
             const endTrigger = element.dataset.end || "bottom top+=10%";
             const revert = element.hasAttribute('data-revert') ? 
-                element.dataset.revert === 'true' : true; // Default to true if not specified
+                element.dataset.revert === 'false' : false; // Default to true if not specified
 
             // Create ScrollTrigger configuration first
             const scrollTriggerConfig = {
